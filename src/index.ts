@@ -15,6 +15,7 @@ interface ServerConfig {
 interface ServerContext {
     db: lowdb.LowdbAsync<any>;
     sdk: SDK;
+    secret: string;
 }
 
 const config: ServerConfig = {
@@ -53,6 +54,7 @@ async function main() {
     const context: ServerContext = {
         db: await createDb(),
         sdk: new SDK(config.rpcHttp),
+        secret: "ede1d4ccb4ec9a8bbbae9a13db3f4a7b56ea04189be86ac3a6a439d9a0a1addd",
     };
     await context.db.defaults({ counter: 0 }).write();
     try {
