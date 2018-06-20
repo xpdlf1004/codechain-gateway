@@ -5,16 +5,21 @@ import * as bodyParser from "body-parser";
 import * as lowdb from "lowdb";
 import * as FileAsync from "lowdb/adapters/FileAsync"
 
+import { SDK } from "codechain-sdk";
+
 interface ServerConfig {
     dbPath: string;
+    rpcHttp: string;
 }
 
 interface ServerContext {
     db: lowdb.LowdbAsync<any>;
+    sdk: SDK;
 }
 
 const config: ServerConfig = {
     dbPath: "db.json",
+    rpcHttp: "http://localhost:8080",
 };
 
 const createDb = async () => {
@@ -47,8 +52,16 @@ const runWebServer = (context: ServerContext) => {
 async function main() {
     const context: ServerContext = {
         db: await createDb(),
-    }
+        sdk: new SDK(config.rpcHttp),
+    };
     await context.db.defaults({ counter: 0 }).write();
+    try {
+        const response = await context.sdk.ping();
+        console.log("CodeChain node connected successfully");
+    } catch (e) {
+        console.error(e);
+        process.exit(0);
+    }
     runWebServer(context);
 }
 
