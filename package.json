@@ -1,0 +1,19 @@
+{
+  "name": "codechain-gateway",
+  "version": "0.1.0",
+  "description": "CodeChain Gateway Reference Implementation Written in Typescript",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kodebox-io/codechain-gateway.git"
+  },
+  "author": "CodeChain Team <codechain@kodebox.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kodebox-io/codechain-gateway/issues"
+  },
+  "homepage": "https://github.com/kodebox-io/codechain-gateway#readme"
+}
