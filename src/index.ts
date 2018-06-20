@@ -5,7 +5,7 @@ import * as bodyParser from "body-parser";
 import * as lowdb from "lowdb";
 import * as FileAsync from "lowdb/adapters/FileAsync"
 
-import { SDK } from "codechain-sdk";
+import { SDK, Parcel, AssetMintTransaction, H256, H160 } from "codechain-sdk";
 
 interface ServerConfig {
     dbPath: string;
@@ -36,9 +36,28 @@ const runWebServer = (context: ServerContext) => {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     // Router
-    app.use("/", async (req, res, next) => {
-        await context.db.update("counter", n => n + 1).write();
-        res.send("Hello, world!");
+    // FIXME: Authenticate
+    app.post("/new_asset", async (req, res, next) => {
+        const { registrar, amount, name, imageUrl, decimal } = req.body;
+        if (typeof registrar === "string" && registrar.length !== 40) {
+            return res.status(400).send("Invalid registrar");
+        } else if (typeof amount !== "number" || amount < 0) {
+            return res.status(400).send("Invalid amount");
+        } else if (typeof name !== "string") {
+            return res.status(400).send("Name must be given");
+        } else if (typeof decimal === "number" && (decimal < 0 || 18 < decimal)) {
+            return res.status(400).send("Invalid decimal");
+        }
+        // FIXME: get lockScriptHash and Parameters from a provider
+        const mintTransaction = new AssetMintTransaction({
+            metadata: JSON.stringify({ name, imageUrl, decimal }),
+            amount,
+            lockScriptHash: new H256(""),
+            parameters: [],
+            registrar: new H160(registrar),
+            nonce: 0
+        });
+        res.sendStatus(501);
     });
 
     app.use((req, res, next) => {
