@@ -1,3 +1,5 @@
 # CodeChain Gateway Reference
 
-CodeChain Gateway Reference Implementation Written in TypeScript. Currently it's alpha version. If you have any question, please join [CodeChain Gitter](https://gitter.im/CodeChain-io/codechain) chat.
+CodeChain gateway reference implementation written in TypeScript.
+
+Currently, it's a alpha version. If you have a question or want to discussion, please join [CodeChain Gitter](https://gitter.im/CodeChain-io/codechain) chat.
