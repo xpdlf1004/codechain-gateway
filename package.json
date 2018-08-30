@@ -4,7 +4,9 @@
   "description": "CodeChain Gateway Reference Implementation Written in Typescript",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "yarn lint && echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint -p . && prettier 'src/**/*.ts' -l",
+    "fmt": "tslint -p . --fix && prettier 'src/**/*ts' --write"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,10 @@
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.0",
     "@types/lowdb": "^1.0.2",
-    "@types/morgan": "^1.7.35"
+    "@types/morgan": "^1.7.35",
+    "prettier": "1.14.2",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.14.0",
+    "typescript": "^3.0.3"
   }
 }
