@@ -1,11 +1,11 @@
+import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as morgan from "morgan";
-import * as bodyParser from "body-parser";
 
 import * as lowdb from "lowdb";
-import * as FileAsync from "lowdb/adapters/FileAsync"
+import * as FileAsync from "lowdb/adapters/FileAsync";
 
-import { SDK, Parcel, AssetMintTransaction, H256, H160 } from "codechain-sdk";
+import { AssetMintTransaction, H160, H256, Parcel, SDK } from "codechain-sdk";
 
 interface ServerConfig {
     dbPath: string;
@@ -20,7 +20,7 @@ interface ServerContext {
 
 const config: ServerConfig = {
     dbPath: "db.json",
-    rpcHttp: "http://localhost:8080",
+    rpcHttp: "http://localhost:8080"
 };
 
 const createDb = async () => {
@@ -45,7 +45,10 @@ const runWebServer = (context: ServerContext) => {
             return res.status(400).send("Invalid amount");
         } else if (typeof name !== "string") {
             return res.status(400).send("Name must be given");
-        } else if (typeof decimal === "number" && (decimal < 0 || 18 < decimal)) {
+        } else if (
+            typeof decimal === "number" &&
+            (decimal < 0 || 18 < decimal)
+        ) {
             return res.status(400).send("Invalid decimal");
         }
         // FIXME: get lockScriptHash and Parameters from a provider
@@ -64,8 +67,8 @@ const runWebServer = (context: ServerContext) => {
         res.status(404).send("Not Found");
     });
 
-    app.listen(3000, function() {
-        console.log('Express server listening on port 3000');
+    app.listen(3000, () => {
+        console.log("Express server listening on port 3000");
     });
 };
 
@@ -73,7 +76,8 @@ async function main() {
     const context: ServerContext = {
         db: await createDb(),
         sdk: new SDK(config.rpcHttp),
-        secret: "ede1d4ccb4ec9a8bbbae9a13db3f4a7b56ea04189be86ac3a6a439d9a0a1addd",
+        secret:
+            "ede1d4ccb4ec9a8bbbae9a13db3f4a7b56ea04189be86ac3a6a439d9a0a1addd"
     };
     await context.db.defaults({ counter: 0 }).write();
     try {
