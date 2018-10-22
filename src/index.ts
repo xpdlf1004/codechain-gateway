@@ -5,7 +5,7 @@ import * as morgan from "morgan";
 import * as lowdb from "lowdb";
 import * as FileAsync from "lowdb/adapters/FileAsync";
 
-import { AssetMintTransaction, H160, H256, Parcel, SDK } from "codechain-sdk";
+import { SDK } from "codechain-sdk";
 
 interface ServerConfig {
     dbPath: string;
@@ -35,34 +35,6 @@ const runWebServer = (context: ServerContext) => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    // Router
-    // FIXME: Authenticate
-    app.post("/new_asset", async (req, res, next) => {
-        const { registrar, amount, name, imageUrl, decimal } = req.body;
-        if (typeof registrar === "string" && registrar.length !== 40) {
-            return res.status(400).send("Invalid registrar");
-        } else if (typeof amount !== "number" || amount < 0) {
-            return res.status(400).send("Invalid amount");
-        } else if (typeof name !== "string") {
-            return res.status(400).send("Name must be given");
-        } else if (
-            typeof decimal === "number" &&
-            (decimal < 0 || 18 < decimal)
-        ) {
-            return res.status(400).send("Invalid decimal");
-        }
-        // FIXME: get lockScriptHash and Parameters from a provider
-        const mintTransaction = new AssetMintTransaction({
-            metadata: JSON.stringify({ name, imageUrl, decimal }),
-            amount,
-            lockScriptHash: new H256(""),
-            parameters: [],
-            registrar: new H160(registrar),
-            nonce: 0
-        });
-        res.sendStatus(501);
-    });
-
     app.use((req, res, next) => {
         res.status(404).send("Not Found");
     });
@@ -75,13 +47,13 @@ const runWebServer = (context: ServerContext) => {
 async function main() {
     const context: ServerContext = {
         db: await createDb(),
-        sdk: new SDK(config.rpcHttp),
+        sdk: new SDK({ server: config.rpcHttp }),
         secret:
             "ede1d4ccb4ec9a8bbbae9a13db3f4a7b56ea04189be86ac3a6a439d9a0a1addd"
     };
     await context.db.defaults({ counter: 0 }).write();
     try {
-        const response = await context.sdk.ping();
+        await context.sdk.rpc.node.ping();
         console.log("CodeChain node connected successfully");
     } catch (e) {
         console.error(e);

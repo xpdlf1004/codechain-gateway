@@ -20,7 +20,7 @@
   "homepage": "https://github.com/kodebox-io/codechain-gateway#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "codechain-sdk": "^0.1.0-alpha.4",
+    "codechain-sdk": "^0.4.0-rc3",
     "express": "^4.16.3",
     "lowdb": "^1.0.0",
     "morgan": "^1.9.0"
