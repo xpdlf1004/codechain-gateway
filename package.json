@@ -2,12 +2,11 @@
   "name": "codechain-gateway",
   "version": "0.1.0",
   "description": "CodeChain Gateway Reference Implementation Written in Typescript",
-  "main": "src/index.ts",
   "scripts": {
     "test": "yarn lint && echo \"Error: no test specified\" && exit 1",
     "lint": "tslint -p . && prettier 'src/**/*.ts' -l",
     "fmt": "tslint -p . --fix && prettier 'src/**/*ts' --write",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/server/index.ts"
   },
   "repository": {
     "type": "git",
