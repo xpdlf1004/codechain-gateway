@@ -28,13 +28,52 @@ export class Account extends React.Component<{}, States> {
       return <h1>loading</h1>;
     }
     return (
-      <h1>
-        Account Page
+      <div>
+        <h1>Account Page</h1>
         <br />
-        {accounts.length}
-      </h1>
+        Total {accounts.length} accounts
+        <br />
+        {accounts.map(a => (
+          <div key={a}>
+            <p>
+              {a} <button onClick={() => this.onClickRemove(a)}>x</button>
+            </p>
+          </div>
+        ))}
+        {accounts.length < 20 && <button onClick={this.onClickAdd}>Add</button>}
+      </div>
     );
   }
+
+  private onClickRemove = (address: string) => {
+    fetch(`//localhost:4000/account/${address}`, { method: "DELETE" })
+      .then(_ => {
+        const { accounts } = this.state;
+        if (accounts !== null) {
+          this.setState({ accounts: accounts.filter(a => a !== address) });
+        }
+      })
+      .catch(e => {
+        this.setState({ err: String(e) });
+      });
+  };
+
+  private onClickAdd = () => {
+    fetch("//localhost:4000/account/new", { method: "POST" })
+      .then(response => response.json())
+      .then(account => {
+        this.checkAccount(account);
+        const { accounts } = this.state;
+        if (accounts === null) {
+          this.setState({ accounts: [account] });
+        } else {
+          this.setState({ accounts: [...accounts, account] });
+        }
+      })
+      .catch(e => {
+        this.setState({ err: String(e) });
+      });
+  };
 
   private loadAccount() {
     fetch("//localhost:4000/account/list")
@@ -46,6 +85,12 @@ export class Account extends React.Component<{}, States> {
       .catch(err => {
         this.setState({ err: String(err) });
       });
+  }
+
+  private checkAccount(account: any) {
+    if (typeof account !== "string") {
+      throw Error(`account must be a string`);
+    }
   }
 
   private checkAccounts(accounts: any) {
