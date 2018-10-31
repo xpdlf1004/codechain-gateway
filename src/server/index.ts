@@ -1,11 +1,11 @@
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as express from "express";
-import * as morgan from "morgan";
-
 import * as lowdb from "lowdb";
 import * as FileAsync from "lowdb/adapters/FileAsync";
+import * as morgan from "morgan";
 
+import { CCKey } from "codechain-keystore";
 import { SDK } from "codechain-sdk";
 import { AssetTransferTransaction } from "codechain-sdk/lib/core/classes";
 
@@ -38,9 +38,10 @@ const createDb = async () => {
     return lowdb(adapter);
 };
 
-const runWebServer = (context: ServerContext, useCors = false) => {
+const runWebServer = async (context: ServerContext, useCors = false) => {
     const app = express();
     const port = process.env.PORT || 4000;
+    const cckey = await CCKey.create();
 
     app.use(morgan("dev"));
     app.use(bodyParser.json());
@@ -72,6 +73,62 @@ const runWebServer = (context: ServerContext, useCors = false) => {
             res.json("success");
         } catch (e) {
             res.sendStatus(500).send(e.message);
+        }
+    });
+
+    app.get("/account/list", async (req, res, next) => {
+        const keys = await cckey.platform.getKeys();
+        const accounts = keys.map(k =>
+            context.sdk.core.classes.PlatformAddress.fromAccountId(k).toString()
+        );
+        res.json({ accounts });
+    });
+
+    app.post("/account/new", async (req, res) => {
+        cckey.platform
+            .createKey({})
+            .then(key => {
+                res.status(200).json(
+                    context.sdk.core.classes.PlatformAddress.fromAccountId(
+                        key
+                    ).toString()
+                );
+            })
+            .catch(_ => {
+                res.status(500).send();
+            });
+    });
+
+    app.get("/account/:address", async (req, res) => {
+        const { address } = req.params;
+        if (!context.sdk.core.classes.PlatformAddress.check(address)) {
+            return res.status(400).send();
+        }
+        try {
+            const balance = await context.sdk.rpc.chain.getBalance(address);
+            // FIXME: seq
+            const nonce = await context.sdk.rpc.chain.getNonce(address);
+            res.json({
+                balance: balance.toString(),
+                seq: nonce.toString()
+            });
+        } catch (e) {
+            res.status(500).send();
+        }
+    });
+
+    app.delete("/account/:address", async (req, res) => {
+        const { address } = req.params;
+        try {
+            const accountId = context.sdk.core.classes.PlatformAddress.fromString(
+                address
+            ).getAccountId().value;
+            cckey.platform
+                .deleteKey({ key: accountId })
+                .then(() => res.status(200).send())
+                .catch(_ => res.status(500).send());
+        } catch (e) {
+            res.status(400).send();
         }
     });
 
