@@ -40,7 +40,7 @@ const createDb = async () => {
 
 const runWebServer = (context: ServerContext, useCors = false) => {
     const app = express();
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 4000;
 
     app.use(morgan("dev"));
     app.use(bodyParser.json());
