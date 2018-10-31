@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 interface States {
   accounts: string[] | null;
@@ -36,7 +37,8 @@ export class Account extends React.Component<{}, States> {
         {accounts.map(a => (
           <div key={a}>
             <p>
-              {a} <button onClick={() => this.onClickRemove(a)}>x</button>
+              <Link to={`account/${a}`}>{a}</Link>
+              <button onClick={() => this.onClickRemove(a)}>x</button>
             </p>
           </div>
         ))}

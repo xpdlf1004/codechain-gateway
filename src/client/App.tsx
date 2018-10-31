@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 import { Account } from "./pages/Account";
+import { AccountDetail } from "./pages/AccountDetail";
 import { Home } from "./pages/Home";
 import { store } from "./store";
 
@@ -17,6 +18,7 @@ export const App = () => (
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/account" component={Account} />
+          <Route exact path="/account/:address" component={AccountDetail} />
           <Route component={NotFound} />
         </Switch>
       </div>
