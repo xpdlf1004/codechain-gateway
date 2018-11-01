@@ -34,7 +34,7 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
       errors: {},
       data: {
         recipient: "create",
-        amount: 0,
+        amount: 1,
         metadata: "",
         registrar: "none"
       }

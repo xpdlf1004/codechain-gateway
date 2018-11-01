@@ -83,7 +83,7 @@ export class Asset extends React.Component<{}, States> {
     err: InputGroupError | null,
     data: MintTransactionInputGroupValue
   ) => {
-    if (err) {
+    if (err !== null && Object.keys(err).length > 0) {
       this.setState({
         inputGroupError: err
       });
