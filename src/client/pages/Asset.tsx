@@ -5,19 +5,52 @@ import { MintTransactionInputGroupValue } from "../../common/types/transactions"
 import { FeePayerSelect } from "../components/FeePayerSelect";
 import { MintComponent } from "../components/Mint";
 
-export class Asset extends React.Component {
+interface States {
+  mintValue: MintTransactionInputGroupValue;
+  feePayer: string;
+  inputGroupError: boolean;
+  txError?: string;
+}
+
+export class Asset extends React.Component<{}, States> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      mintValue: {
+        recipient: "create",
+        amount: 0,
+        metadata: "",
+        registrar: "none"
+      },
+      feePayer: "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47",
+      inputGroupError: false
+    };
+  }
   public render() {
+    if (this.state.txError) {
+      return <div>Errored: {this.state.txError}</div>;
+    }
     return (
       <div>
         <MintComponent onChange={this.handleMintTransactionEditorChange} />
         <hr />
         FeePayer:
         <FeePayerSelect
-          addresses={[] /* Not implemented */}
+          addresses={
+            [
+              "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47"
+            ] /* Not implemented */
+          }
           onChange={this.handleFeePayerSelectChange}
         />
         <br />
-        <button onClick={this.handleSendClick}>Send Transaction</button>
+        <button
+          onClick={this.handleSendClick}
+          disabled={this.state.inputGroupError}
+        >
+          Send Transaction
+        </button>
       </div>
     );
   }
@@ -33,10 +66,36 @@ export class Asset extends React.Component {
     err: string | null,
     data: MintTransactionInputGroupValue
   ) => {
-    // Not implemented
+    if (err) {
+      this.setState({
+        inputGroupError: true
+      });
+      return;
+    }
+    this.setState({
+      mintValue: data,
+      inputGroupError: false
+    });
   };
 
   private handleSendClick = () => {
-    // Not implemented
+    fetch("//localhost:4000/transaction/mint", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        feePayer: this.state.feePayer,
+        mintValue: this.state.mintValue
+      })
+    })
+      .then(response => response.json())
+      .then(result => {
+        // Not implemented
+        console.log(result);
+      })
+      .catch(err => {
+        this.setState({ txError: String(err) });
+      });
   };
 }

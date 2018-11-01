@@ -9,6 +9,8 @@ import { CCKey } from "codechain-keystore";
 import { SDK } from "codechain-sdk";
 import { AssetTransferTransaction } from "codechain-sdk/lib/core/classes";
 
+import { MintTransactionInputGroupValue } from "../common/types/transactions";
+
 const corsOptions = {
     origin: true,
     credentials: true,
@@ -41,7 +43,7 @@ const createDb = async () => {
 const runWebServer = async (context: ServerContext, useCors = false) => {
     const app = express();
     const port = process.env.PORT || 4000;
-    const cckey = await CCKey.create();
+    const cckey = await CCKey.create({ dbPath: "keystore.db" });
 
     app.use(morgan("dev"));
     app.use(bodyParser.json());
@@ -115,6 +117,7 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
         } catch (e) {
             res.status(500).send();
         }
+        return;
     });
 
     app.delete("/account/:address", async (req, res) => {
@@ -132,6 +135,63 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
         }
     });
 
+    app.post("/transaction/mint", async (req, res) => {
+        const { mintValue, feePayer } = req.body;
+        // FIXME: Check mintValue is MintTransactionInputGroupValue
+        const {
+            recipient,
+            amount,
+            metadata,
+            registrar
+        } = mintValue as MintTransactionInputGroupValue;
+
+        if (recipient !== "create") {
+            // FIXME: not implemented
+            return res.status(500).send();
+        }
+
+        const pubkeyhash = await cckey.asset.createKey({});
+        const address = context.sdk.core.classes.AssetTransferAddress.fromTypeAndPayload(
+            1,
+            pubkeyhash
+        );
+
+        const mintTx = context.sdk.core.createAssetMintTransaction({
+            scheme: {
+                shardId: 0,
+                worldId: 0,
+                metadata,
+                amount,
+                registrar: registrar === "none" ? undefined : registrar
+            },
+            recipient: address
+        });
+        const parcel = context.sdk.core.createAssetTransactionGroupParcel({
+            transactions: [mintTx]
+        });
+        // FIXME: seq
+        context.sdk.rpc.chain
+            .getNonce(feePayer)
+            .then(nonce => {
+                return context.sdk.key.signParcel(parcel, {
+                    account: feePayer,
+                    fee: 10,
+                    nonce
+                });
+            })
+            .then(signedParcel => {
+                return context.sdk.rpc.chain.sendSignedParcel(signedParcel);
+            })
+            .then(hash => {
+                res.status(200).json(hash.value);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send();
+            });
+        return;
+    });
+
     app.use((req, res, next) => {
         res.status(404).send("Not Found");
     });
@@ -145,7 +205,14 @@ async function main() {
     const context: ServerContext = {
         db: await createDb(),
         // FIXME: Extract networkId to the config file or environment variables
-        sdk: new SDK({ server: config.rpcHttp, networkId: "tc" }),
+        sdk: new SDK({
+            server: config.rpcHttp,
+            networkId: "tc",
+            keyStoreType: {
+                type: "local",
+                path: "keystore.db"
+            }
+        }),
         // FIXME: Extract the address and passphrase to the config file or environment variables
         platformAddress: "tccq9wp2p6655qrjfvlw80g9rl5klg84y3emu2vd00s",
         passphrase: "test password"
