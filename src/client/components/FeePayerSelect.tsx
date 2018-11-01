@@ -20,7 +20,7 @@ export class FeePayerSelect extends React.Component<Props> {
       <select onChange={this.handleSelectChange}>
         {addresses.map(a => (
           <option key={a} value={a}>
-            a
+            {a}
           </option>
         ))}
       </select>
