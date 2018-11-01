@@ -1,7 +1,9 @@
 import * as React from "react";
 
+import { MintTransactionInputGroupValue } from "../../common/types/transactions";
+
 import { FeePayerSelect } from "../components/FeePayerSelect";
-import { MintComponent, MintRequest } from "../components/Mint";
+import { MintComponent } from "../components/Mint";
 
 export class Asset extends React.Component {
   public render() {
@@ -29,7 +31,7 @@ export class Asset extends React.Component {
 
   private handleMintTransactionEditorChange = (
     err: string | null,
-    data: MintRequest
+    data: MintTransactionInputGroupValue
   ) => {
     // Not implemented
   };

@@ -1,31 +1,22 @@
 import * as React from "react";
 
+import {
+  MintTransactionInputGroupValue,
+  RecipientSelectValue
+} from "../../common/types/transactions";
+
 import { RecipientSelect } from "./Recipient";
 import { RegistrarSelect } from "./Registrar";
 
-type AssetTransferAddress = string;
-type PlatformAddress = string;
-type Recipient =
-  | "create"
-  | AssetTransferAddress
-  | {
-      lockScriptHash: string;
-      parameters: Buffer[];
-    };
-
-export interface MintRequest {
-  recipient: Recipient;
-  amount: number;
-  metadata: string;
-  registrar: "none" | PlatformAddress;
-}
-
 interface Props {
-  onChange?: (err: string | null, request?: MintRequest) => void;
+  onChange?: (
+    err: string | null,
+    request?: MintTransactionInputGroupValue
+  ) => void;
 }
 
 interface States {
-  data: MintRequest;
+  data: MintTransactionInputGroupValue;
 }
 
 export class MintComponent extends React.Component<Props, States> {
@@ -63,7 +54,7 @@ export class MintComponent extends React.Component<Props, States> {
 
   private handleRecipientChange = (
     err: string | null,
-    recipient: Recipient
+    recipient: RecipientSelectValue
   ) => {
     if (err) {
       return this.emitChange(err);
@@ -118,7 +109,10 @@ export class MintComponent extends React.Component<Props, States> {
     this.emitChange(null, data);
   };
 
-  private emitChange = (err: string | null, data?: MintRequest) => {
+  private emitChange = (
+    err: string | null,
+    data?: MintTransactionInputGroupValue
+  ) => {
     if (this.props.onChange) {
       this.props.onChange(err, data);
     }

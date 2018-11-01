@@ -1,18 +1,10 @@
 import * as React from "react";
 
-type AssetTransferAddress = string;
+import { RecipientSelectValue } from "../../common/types/transactions";
+
 interface Props {
   addresses?: string[];
-  onChange?: (
-    err: string | null,
-    recipient:
-      | "create"
-      | AssetTransferAddress
-      | {
-          lockScriptHash: string;
-          parameters: Buffer[];
-        }
-  ) => void;
+  onChange?: (err: string | null, recipient: RecipientSelectValue) => void;
 }
 
 interface States {
@@ -67,13 +59,7 @@ export class RecipientSelect extends React.Component<Props, States> {
     this.setState({
       showNonAddressInputs: e.target.value === "address"
     });
-    let recipient:
-      | "create"
-      | AssetTransferAddress
-      | {
-          lockScriptHash: string;
-          parameters: Buffer[];
-        };
+    let recipient: RecipientSelectValue;
 
     switch (e.target.value) {
       case "create":
@@ -94,13 +80,7 @@ export class RecipientSelect extends React.Component<Props, States> {
 
   private emitChange = (
     err: string | null,
-    recipient:
-      | "create"
-      | AssetTransferAddress
-      | {
-          lockScriptHash: string;
-          parameters: Buffer[];
-        }
+    recipient: RecipientSelectValue
   ) => {
     if (this.props.onChange) {
       this.props.onChange(err, recipient);
