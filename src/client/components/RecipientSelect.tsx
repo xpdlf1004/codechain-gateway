@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { H160 } from "codechain-primitives/lib";
+import { AssetTransferAddress, H160 } from "codechain-primitives/lib";
 
 import { RecipientSelectValue } from "../../common/types/transactions";
 
@@ -87,7 +87,7 @@ export class RecipientSelect extends React.Component<Props, States> {
         };
         break;
       default:
-        recipient = e.target.value;
+        recipient = AssetTransferAddress.fromString(e.target.value);
         break;
     }
     this.emitChange(null, recipient);

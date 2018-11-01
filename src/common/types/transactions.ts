@@ -1,6 +1,9 @@
-import { H160, PlatformAddress } from "codechain-primitives/lib";
+import {
+    AssetTransferAddress,
+    H160,
+    PlatformAddress
+} from "codechain-primitives/lib";
 
-export type AssetTransferAddress = string;
 export type RecipientSelectValue =
     | "create"
     | AssetTransferAddress
