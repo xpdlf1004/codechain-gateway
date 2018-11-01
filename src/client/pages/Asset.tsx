@@ -10,6 +10,7 @@ interface States {
   feePayer: string;
   inputGroupError: boolean;
   txError?: string;
+  parcelHash?: string;
 }
 
 export class Asset extends React.Component<{}, States> {
@@ -28,8 +29,9 @@ export class Asset extends React.Component<{}, States> {
     };
   }
   public render() {
-    if (this.state.txError) {
-      return <div>Errored: {this.state.txError}</div>;
+    const { txError, inputGroupError, parcelHash } = this.state;
+    if (txError) {
+      return <div>Errored: {txError}</div>;
     }
     return (
       <div>
@@ -45,12 +47,17 @@ export class Asset extends React.Component<{}, States> {
           onChange={this.handleFeePayerSelectChange}
         />
         <br />
-        <button
-          onClick={this.handleSendClick}
-          disabled={this.state.inputGroupError}
-        >
+        <button onClick={this.handleSendClick} disabled={inputGroupError}>
           Send Transaction
         </button>
+        {parcelHash && (
+          <a
+            href={`https://husky.codechain.io/explorer/parcel/${parcelHash}`}
+            target="_blank"
+          >
+            Transaction sent
+          </a>
+        )}
       </div>
     );
   }
@@ -91,8 +98,9 @@ export class Asset extends React.Component<{}, States> {
     })
       .then(response => response.json())
       .then(result => {
-        // Not implemented
-        console.log(result);
+        this.setState({
+          parcelHash: `0x${result}`
+        });
       })
       .catch(err => {
         this.setState({ txError: String(err) });
