@@ -1,8 +1,12 @@
 import * as React from "react";
 
+import { PlatformAddress } from "codechain-primitives/lib";
+
+import { RegistrarSelectValue } from "../../common/types/transactions";
+
 interface Props {
   addresses?: string[];
-  onChange?: (err: string | null, address: string) => void;
+  onChange?: (err: string | null, address?: RegistrarSelectValue) => void;
 }
 
 interface States {
@@ -54,6 +58,11 @@ export class RegistrarSelect extends React.Component<Props, States> {
     this.setState({
       addressInputValue: e.target.value
     });
+    try {
+      this.emitChange(null, PlatformAddress.fromString(e.target.value));
+    } catch (e) {
+      this.emitChange(String(e));
+    }
   };
 
   private handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -62,14 +71,22 @@ export class RegistrarSelect extends React.Component<Props, States> {
       showInput: e.target.value === "manual"
     });
 
-    if (e.target.value === "manual") {
-      this.emitChange(null, this.state.addressInputValue);
-    } else {
-      this.emitChange(null, e.target.value);
+    if (e.target.value === "none") {
+      return this.emitChange(null, "none");
+    }
+
+    const input =
+      e.target.value === "manual"
+        ? this.state.addressInputValue
+        : e.target.value;
+    try {
+      this.emitChange(null, PlatformAddress.fromString(input));
+    } catch (e) {
+      this.emitChange(String(e));
     }
   };
 
-  private emitChange = (err: string | null, address: string) => {
+  private emitChange = (err: string | null, address?: RegistrarSelectValue) => {
     if (this.props.onChange) {
       this.props.onChange(err, address);
     }

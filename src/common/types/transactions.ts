@@ -1,5 +1,6 @@
+import { PlatformAddress } from "codechain-primitives/lib";
+
 export type AssetTransferAddress = string;
-export type PlatformAddress = string;
 export type RecipientSelectValue =
     | "create"
     | AssetTransferAddress
@@ -8,9 +9,11 @@ export type RecipientSelectValue =
           parameters: Buffer[];
       };
 
+export type RegistrarSelectValue = PlatformAddress | "none";
+
 export interface MintTransactionInputGroupValue {
     recipient: RecipientSelectValue;
     amount: number;
     metadata: string;
-    registrar: "none" | PlatformAddress;
+    registrar: RegistrarSelectValue;
 }

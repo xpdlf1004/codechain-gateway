@@ -3,12 +3,15 @@ import * as React from "react";
 import { MintTransactionInputGroupValue } from "../../common/types/transactions";
 
 import { FeePayerSelect } from "../components/FeePayerSelect";
-import { MintTransactionInputGroup } from "../components/MintTransactionInputGroup";
+import {
+  InputGroupError,
+  MintTransactionInputGroup
+} from "../components/MintTransactionInputGroup";
 
 interface States {
   mintValue: MintTransactionInputGroupValue;
   feePayer: string;
-  inputGroupError: boolean;
+  inputGroupError: InputGroupError;
   txError?: string;
   parcelHash?: string;
 }
@@ -25,7 +28,7 @@ export class Asset extends React.Component<{}, States> {
         registrar: "none"
       },
       feePayer: "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47",
-      inputGroupError: false
+      inputGroupError: {}
     };
   }
   public render() {
@@ -49,9 +52,14 @@ export class Asset extends React.Component<{}, States> {
           onChange={this.handleFeePayerSelectChange}
         />
         <br />
-        <button onClick={this.handleSendClick} disabled={inputGroupError}>
-          Send Transaction
-        </button>
+        <span title={Object.keys(inputGroupError).join(" ")}>
+          <button
+            onClick={this.handleSendClick}
+            disabled={Object.keys(inputGroupError).length > 0}
+          >
+            Send Transaction
+          </button>
+        </span>
         {parcelHash && (
           <a
             href={`https://husky.codechain.io/explorer/parcel/${parcelHash}`}
@@ -72,18 +80,18 @@ export class Asset extends React.Component<{}, States> {
   };
 
   private handleMintTransactionEditorChange = (
-    err: string | null,
+    err: InputGroupError | null,
     data: MintTransactionInputGroupValue
   ) => {
     if (err) {
       this.setState({
-        inputGroupError: true
+        inputGroupError: err
       });
       return;
     }
     this.setState({
       mintValue: data,
-      inputGroupError: false
+      inputGroupError: err || {}
     });
   };
 

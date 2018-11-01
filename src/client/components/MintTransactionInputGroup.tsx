@@ -1,21 +1,28 @@
+import update from "immutability-helper";
 import * as React from "react";
 
 import {
   MintTransactionInputGroupValue,
-  RecipientSelectValue
+  RecipientSelectValue,
+  RegistrarSelectValue
 } from "../../common/types/transactions";
 
 import { RecipientSelect } from "./RecipientSelect";
 import { RegistrarSelect } from "./RegistrarSelect";
 
+export interface InputGroupError {
+  [inputName: string]: string;
+}
+
 interface Props {
   onChange?: (
-    err: string | null,
+    err: InputGroupError | null,
     request?: MintTransactionInputGroupValue
   ) => void;
 }
 
 interface States {
+  errors: InputGroupError;
   data: MintTransactionInputGroupValue;
 }
 
@@ -24,6 +31,7 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
     super(props);
 
     this.state = {
+      errors: {},
       data: {
         recipient: "create",
         amount: 0,
@@ -57,16 +65,24 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
     recipient: RecipientSelectValue
   ) => {
     if (err) {
-      return this.emitChange(err);
+      const errors = update(this.state.errors, {
+        recipient: { $set: err }
+      });
+      this.setState({
+        errors
+      });
+      return this.emitChange(errors);
     }
-    const data = {
-      ...this.state.data,
-      recipient
-    };
-    this.setState({
-      data
+    const newState = update(this.state, {
+      errors: { $unset: ["recipient"] },
+      data: {
+        recipient: {
+          $set: recipient
+        }
+      }
     });
-    this.emitChange(null, data);
+    this.setState(newState);
+    this.emitChange(newState.errors, newState.data);
   };
 
   private handleMetadataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,36 +97,62 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
   };
 
   private handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      const amount = Number.parseInt(e.target.value, 10);
-      const data = {
-        ...this.state.data,
-        amount
-      };
-      this.setState({ data });
-      this.emitChange(null, data);
-    } catch (e) {
-      this.emitChange(String(e));
+    const amount = Number.parseInt(e.target.value, 10);
+    if (Number.isNaN(amount) || !Number.isInteger(amount) || amount <= 0) {
+      const errors = update(this.state.errors, {
+        amount: {
+          $set: `The amount must be a positive integer but found ${
+            e.target.value
+          }`
+        }
+      });
+      this.setState({ errors });
+      this.emitChange(errors);
+      return;
     }
+    const newState = update(this.state, {
+      data: {
+        amount: {
+          $set: amount
+        }
+      },
+      errors: {
+        $unset: ["amount"]
+      }
+    });
+    this.setState(newState);
+    this.emitChange(newState.errors, newState.data);
   };
 
   private handleRegistrarSelectChange = (
     err: string | null,
-    address: string | "none"
+    address: RegistrarSelectValue
   ) => {
     if (err) {
-      return this.emitChange(err);
+      const errors = update(this.state.errors, {
+        registrar: {
+          $set: String(err)
+        }
+      });
+      this.setState({ errors });
+      return this.emitChange(errors);
     }
-    const data = {
-      ...this.state.data,
-      registrar: address
-    };
-    this.setState({ data });
-    this.emitChange(null, data);
+    const newState = update(this.state, {
+      errors: {
+        $unset: ["registrar"]
+      },
+      data: {
+        registrar: {
+          $set: address
+        }
+      }
+    });
+    this.setState(newState);
+    this.emitChange(newState.errors, newState.data);
   };
 
   private emitChange = (
-    err: string | null,
+    err: InputGroupError | null,
     data?: MintTransactionInputGroupValue
   ) => {
     if (this.props.onChange) {

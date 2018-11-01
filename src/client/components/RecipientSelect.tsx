@@ -35,7 +35,7 @@ export class RecipientSelect extends React.Component<Props, States> {
             LockScriptHash:
             <input
               onChange={this.handleLockScriptHashChange}
-              value="lockScriptHash"
+              value={this.state.lockScriptHash}
             />
             <br />
             Parameters (not implemented):
