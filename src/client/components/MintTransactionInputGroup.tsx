@@ -5,8 +5,8 @@ import {
   RecipientSelectValue
 } from "../../common/types/transactions";
 
-import { RecipientSelect } from "./Recipient";
-import { RegistrarSelect } from "./Registrar";
+import { RecipientSelect } from "./RecipientSelect";
+import { RegistrarSelect } from "./RegistrarSelect";
 
 interface Props {
   onChange?: (
@@ -19,7 +19,7 @@ interface States {
   data: MintTransactionInputGroupValue;
 }
 
-export class MintComponent extends React.Component<Props, States> {
+export class MintTransactionInputGroup extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
 

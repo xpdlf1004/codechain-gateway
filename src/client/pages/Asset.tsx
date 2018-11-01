@@ -3,7 +3,7 @@ import * as React from "react";
 import { MintTransactionInputGroupValue } from "../../common/types/transactions";
 
 import { FeePayerSelect } from "../components/FeePayerSelect";
-import { MintComponent } from "../components/Mint";
+import { MintTransactionInputGroup } from "../components/MintTransactionInputGroup";
 
 interface States {
   mintValue: MintTransactionInputGroupValue;
@@ -35,7 +35,9 @@ export class Asset extends React.Component<{}, States> {
     }
     return (
       <div>
-        <MintComponent onChange={this.handleMintTransactionEditorChange} />
+        <MintTransactionInputGroup
+          onChange={this.handleMintTransactionEditorChange}
+        />
         <hr />
         FeePayer:
         <FeePayerSelect
