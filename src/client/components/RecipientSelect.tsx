@@ -1,10 +1,12 @@
 import * as React from "react";
 
+import { H160 } from "codechain-primitives/lib";
+
 import { RecipientSelectValue } from "../../common/types/transactions";
 
 interface Props {
   addresses?: string[];
-  onChange?: (err: string | null, recipient: RecipientSelectValue) => void;
+  onChange?: (err: string | null, recipient?: RecipientSelectValue) => void;
 }
 
 interface States {
@@ -38,8 +40,8 @@ export class RecipientSelect extends React.Component<Props, States> {
               value={this.state.lockScriptHash}
             />
             <br />
-            Parameters (not implemented):
-            <input disabled />
+            Parameters:
+            <input disabled title="Not implemented yet" />
           </div>
         )}
       </div>
@@ -52,6 +54,14 @@ export class RecipientSelect extends React.Component<Props, States> {
     this.setState({
       lockScriptHash: e.target.value
     });
+    if (H160.check(e.target.value)) {
+      this.emitChange(null, {
+        lockScriptHash: H160.ensure(e.target.value),
+        parameters: []
+      });
+    } else {
+      this.emitChange(`"${e.target.value}" is not a lock script hash`);
+    }
   };
 
   private handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,8 +76,13 @@ export class RecipientSelect extends React.Component<Props, States> {
         recipient = "create";
         break;
       case "address":
+        if (!H160.check(this.state.lockScriptHash)) {
+          return this.emitChange(
+            `"${this.state.lockScriptHash}" is not a lock script hash`
+          );
+        }
         recipient = {
-          lockScriptHash: this.state.lockScriptHash,
+          lockScriptHash: H160.ensure(this.state.lockScriptHash),
           parameters: []
         };
         break;
@@ -80,7 +95,7 @@ export class RecipientSelect extends React.Component<Props, States> {
 
   private emitChange = (
     err: string | null,
-    recipient: RecipientSelectValue
+    recipient?: RecipientSelectValue
   ) => {
     if (this.props.onChange) {
       this.props.onChange(err, recipient);
