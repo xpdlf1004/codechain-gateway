@@ -42,7 +42,9 @@ export class Account extends React.Component<{}, States> {
             </p>
           </div>
         ))}
-        {accounts.length < 20 && <button onClick={this.onClickAdd}>Add</button>}
+        {accounts.length < 20 && (
+          <button onClick={this.onClickAdd}>Generate</button>
+        )}
       </div>
     );
   }
