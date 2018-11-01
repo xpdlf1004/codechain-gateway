@@ -87,14 +87,10 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
     });
 
     app.post("/account/new", async (req, res) => {
-        cckey.platform
-            .createKey({})
-            .then(key => {
-                res.status(200).json(
-                    context.sdk.core.classes.PlatformAddress.fromAccountId(
-                        key
-                    ).toString()
-                );
+        context.sdk.key
+            .createPlatformAddress()
+            .then(address => {
+                res.status(200).json(address.toString());
             })
             .catch(_ => {
                 res.status(500).send();
