@@ -16,13 +16,13 @@ export const App = () => (
         <br />
         <Link to="/account">Account</Link>
         <br />
-        <Link to="/asset">Asset</Link>
+        <Link to="/asset/new">Mint</Link>
         <hr />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/account" component={Account} />
           <Route exact path="/account/:address" component={AccountDetail} />
-          <Route exact path="/asset" component={AssetPage} />
+          <Route exact path="/asset/new" component={AssetPage} />
           <Route component={NotFound} />
         </Switch>
       </div>
