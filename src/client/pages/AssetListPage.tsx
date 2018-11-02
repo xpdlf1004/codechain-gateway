@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 interface States {
   assets?: string[];
@@ -28,7 +29,9 @@ export class AssetListPage extends React.Component<{}, States> {
       <div>
         <span>Total {assets.length} assets</span>
         {assets.map(a => (
-          <div key={a}>{a}</div>
+          <div key={a}>
+            <Link to={`asset/${a}`}>{a}</Link>
+          </div>
         ))}
       </div>
     );

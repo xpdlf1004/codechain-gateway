@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
 import { AccountDetailPage } from "./pages/AccountDetailPage";
 import { AccountPage } from "./pages/AccountPage";
+import { AssetDetailPage } from "./pages/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
 import { AssetPage } from "./pages/AssetPage";
 import { HomePage } from "./pages/HomePage";
@@ -17,7 +18,7 @@ export const App = () => (
         <br />
         <Link to="/account">Account</Link>
         <br />
-        <Link to="/asset">Assets</Link>
+        <Link to="/asset">Asset</Link>
         <br />
         <Link to="/asset/new">Mint</Link>
         <hr />
@@ -27,6 +28,7 @@ export const App = () => (
           <Route exact path="/account/:address" component={AccountDetailPage} />
           <Route exact path="/asset" component={AssetListPage} />
           <Route exact path="/asset/new" component={AssetPage} />
+          <Route exact path="/asset/:address" component={AssetDetailPage} />
           <Route component={NotFound} />
         </Switch>
       </div>
