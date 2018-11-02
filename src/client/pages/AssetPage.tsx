@@ -16,7 +16,7 @@ interface States {
   parcelHash?: string;
 }
 
-export class Asset extends React.Component<{}, States> {
+export class AssetPage extends React.Component<{}, States> {
   constructor(props: {}) {
     super(props);
 

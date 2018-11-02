@@ -6,7 +6,7 @@ interface States {
   err: string | null;
 }
 
-export class Account extends React.Component<{}, States> {
+export class AccountPage extends React.Component<{}, States> {
   constructor(props: {}) {
     super(props);
 

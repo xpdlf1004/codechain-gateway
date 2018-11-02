@@ -2,11 +2,11 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
-import { Account } from "./pages/Account";
-import { AccountDetail } from "./pages/AccountDetail";
-import { Asset as AssetPage } from "./pages/Asset";
+import { AccountDetailPage } from "./pages/AccountDetailPage";
+import { AccountPage } from "./pages/AccountPage";
 import { AssetListPage } from "./pages/AssetListPage";
-import { Home } from "./pages/Home";
+import { AssetPage } from "./pages/AssetPage";
+import { HomePage } from "./pages/HomePage";
 import { store } from "./store";
 
 export const App = () => (
@@ -22,9 +22,9 @@ export const App = () => (
         <Link to="/asset/new">Mint</Link>
         <hr />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/account" component={Account} />
-          <Route exact path="/account/:address" component={AccountDetail} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/account" component={AccountPage} />
+          <Route exact path="/account/:address" component={AccountDetailPage} />
           <Route exact path="/asset" component={AssetListPage} />
           <Route exact path="/asset/new" component={AssetPage} />
           <Route component={NotFound} />
