@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { MintTransactionInputGroupValue } from "../../common/types/transactions";
 
+import { ApiClient } from "../api-client";
 import { FeePayerSelect } from "../components/FeePayerSelect";
 import {
   InputGroupError,
@@ -96,17 +97,9 @@ export class AssetPage extends React.Component<{}, States> {
   };
 
   private handleSendClick = () => {
-    fetch("//localhost:4000/asset/mint", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        feePayer: this.state.feePayer,
-        mintValue: this.state.mintValue
-      })
-    })
-      .then(response => response.json())
+    const { mintValue, feePayer } = this.state;
+    new ApiClient()
+      .mintAsset(mintValue, feePayer)
       .then(result => {
         this.setState({
           parcelHash: `0x${result}`

@@ -3,6 +3,8 @@ import { match } from "react-router";
 
 import { PlatformAddress } from "codechain-primitives/lib";
 
+import { ApiClient } from "../api-client";
+
 interface Props {
   match: match<{ address: string }>;
 }
@@ -58,8 +60,8 @@ export class AccountDetailPage extends React.Component<Props, States> {
   }
 
   private loadAccountDetail(address: string) {
-    fetch(`//localhost:4000/account/${address}`)
-      .then(response => response.json())
+    new ApiClient()
+      .getAccountDetail(address)
       .then(({ balance, seq }) => {
         this.setState({
           details: {

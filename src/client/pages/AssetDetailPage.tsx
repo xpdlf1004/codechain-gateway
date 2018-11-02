@@ -1,6 +1,8 @@
 import * as React from "react";
 import { match } from "react-router";
 
+import { ApiClient } from "../api-client";
+
 interface Props {
   match: match<{ address: string }>;
 }
@@ -45,10 +47,8 @@ export class AssetDetailPage extends React.Component<Props, States> {
   }
 
   private loadAssetDetail(address: string) {
-    fetch(`//localhost:4000/asset/${address}`)
-      .then(response => {
-        return response.json();
-      })
+    new ApiClient()
+      .getAssetDetail(address)
       .then(assetScheme => {
         this.setState({
           scheme: assetScheme,

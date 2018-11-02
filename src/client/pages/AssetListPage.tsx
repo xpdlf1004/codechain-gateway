@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
+import { ApiClient } from "../api-client";
+
 interface States {
   assets?: string[];
   err?: string;
@@ -38,8 +40,8 @@ export class AssetListPage extends React.Component<{}, States> {
   }
 
   private loadAssets() {
-    fetch(`//localhost:4000/asset/list`)
-      .then(response => response.json())
+    new ApiClient()
+      .getAssetList()
       .then(assets => {
         this.setState({
           assets

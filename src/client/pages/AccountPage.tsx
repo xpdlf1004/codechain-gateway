@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
+import { ApiClient } from "../api-client";
+
 interface States {
   accounts: string[] | null;
   err: string | null;
@@ -50,8 +52,9 @@ export class AccountPage extends React.Component<{}, States> {
   }
 
   private onClickRemove = (address: string) => {
-    fetch(`//localhost:4000/account/${address}`, { method: "DELETE" })
-      .then(_ => {
+    new ApiClient()
+      .removeAccount(address)
+      .then(() => {
         const { accounts } = this.state;
         if (accounts !== null) {
           this.setState({ accounts: accounts.filter(a => a !== address) });
@@ -63,8 +66,8 @@ export class AccountPage extends React.Component<{}, States> {
   };
 
   private onClickAdd = () => {
-    fetch("//localhost:4000/account/new", { method: "POST" })
-      .then(response => response.json())
+    new ApiClient()
+      .createAccount()
       .then(account => {
         this.checkAccount(account);
         const { accounts } = this.state;
@@ -80,8 +83,8 @@ export class AccountPage extends React.Component<{}, States> {
   };
 
   private loadAccount() {
-    fetch("//localhost:4000/account/list")
-      .then(response => response.json())
+    new ApiClient()
+      .getAccountList()
       .then(({ accounts }) => {
         this.checkAccounts(accounts);
         this.setState({ accounts });
