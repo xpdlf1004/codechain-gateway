@@ -96,7 +96,7 @@ export class AssetPage extends React.Component<{}, States> {
   };
 
   private handleSendClick = () => {
-    fetch("//localhost:4000/transaction/mint", {
+    fetch("//localhost:4000/asset/mint", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
