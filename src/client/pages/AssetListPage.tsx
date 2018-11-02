@@ -41,7 +41,6 @@ export class AssetListPage extends React.Component<{}, States> {
     fetch(`//localhost:4000/asset/list`)
       .then(response => response.json())
       .then(assets => {
-        console.log(assets);
         this.setState({
           assets
         });
