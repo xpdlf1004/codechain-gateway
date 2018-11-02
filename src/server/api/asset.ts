@@ -1,14 +1,10 @@
 import * as express from "express";
 
-import { CCKey } from "codechain-keystore";
-
 import { ServerContext } from "..";
 import { MintTransactionInputGroupValue } from "../../common/types/transactions";
 
-// FIXME: remove async by replacing creating CCKey with that of the context.
-export const createAssetApiRouter = async (context: ServerContext) => {
+export const createAssetApiRouter = (context: ServerContext) => {
     const router = express.Router();
-    const cckey = await CCKey.create({ dbPath: "keystore.db" });
 
     router.post("/mint", async (req, res) => {
         const { mintValue, feePayer } = req.body;
@@ -25,7 +21,7 @@ export const createAssetApiRouter = async (context: ServerContext) => {
             return res.status(500).send();
         }
 
-        const pubkeyhash = await cckey.asset.createKey({});
+        const pubkeyhash = await context.cckey.asset.createKey({});
         const address = context.sdk.core.classes.AssetTransferAddress.fromTypeAndPayload(
             1,
             pubkeyhash

@@ -1,16 +1,12 @@
 import * as express from "express";
 
-import { CCKey } from "codechain-keystore";
-
 import { ServerContext } from "..";
 
-// FIXME: remove async by replacing creating CCKey with that of the context.
-export const createAccountApiRouter = async (context: ServerContext) => {
+export const createAccountApiRouter = (context: ServerContext) => {
     const router = express.Router();
-    const cckey = await CCKey.create({ dbPath: "keystore.db" });
 
     router.get("/list", async (_, res) => {
-        const keys = await cckey.platform.getKeys();
+        const keys = await context.cckey.platform.getKeys();
         const accounts = keys.map(k =>
             context.sdk.core.classes.PlatformAddress.fromAccountId(k).toString()
         );
@@ -53,7 +49,7 @@ export const createAccountApiRouter = async (context: ServerContext) => {
             const accountId = context.sdk.core.classes.PlatformAddress.fromString(
                 address
             ).getAccountId().value;
-            cckey.platform
+            context.cckey.platform
                 .deleteKey({ key: accountId })
                 .then(() => res.status(200).send())
                 .catch(_ => res.status(500).send());
