@@ -168,17 +168,26 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
         // FIXME: seq
         context.sdk.rpc.chain
             .getNonce(feePayer)
-            .then(nonce => {
-                return context.sdk.key.signParcel(parcel, {
+            .then(nonce =>
+                context.sdk.key.signParcel(parcel, {
                     account: feePayer,
                     fee: 10,
                     nonce
-                });
-            })
-            .then(signedParcel => {
-                return context.sdk.rpc.chain.sendSignedParcel(signedParcel);
-            })
-            .then(hash => {
+                })
+            )
+            .then(signedParcel =>
+                context.sdk.rpc.chain.sendSignedParcel(signedParcel)
+            )
+            .then(hash =>
+                Promise.all([
+                    hash,
+                    context.db
+                        .get("assets")
+                        .push(mintTx.getMintedAsset().assetType.value)
+                        .write()
+                ])
+            )
+            .then(([hash]) => {
                 res.status(200).json(hash.value);
             })
             .catch(err => {
@@ -186,6 +195,10 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
                 res.status(500).send();
             });
         return;
+    });
+
+    app.get("/asset/list", async (req, res) => {
+        res.status(200).json(context.db.get("assets").value());
     });
 
     app.use((req, res, next) => {
@@ -213,7 +226,7 @@ async function main() {
         platformAddress: "tccq9wp2p6655qrjfvlw80g9rl5klg84y3emu2vd00s",
         passphrase: "test password"
     };
-    await context.db.defaults({ counter: 0 }).write();
+    await context.db.defaults({ counter: 0, assets: [] }).write();
     try {
         await context.sdk.rpc.node.ping();
         console.log("CodeChain node connected successfully");
