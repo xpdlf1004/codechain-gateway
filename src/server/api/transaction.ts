@@ -2,7 +2,7 @@ import * as express from "express";
 
 import { AssetTransferTransaction } from "codechain-sdk/lib/core/classes";
 
-import { ServerContext } from "..";
+import { ServerContext } from "../context";
 
 export const createTransactionApiRouter = (context: ServerContext) => {
     const router = express.Router();

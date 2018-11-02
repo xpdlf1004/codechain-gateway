@@ -1,6 +1,6 @@
 import * as express from "express";
 
-import { ServerContext } from "..";
+import { ServerContext } from "../context";
 
 export const createAccountApiRouter = (context: ServerContext) => {
     const router = express.Router();

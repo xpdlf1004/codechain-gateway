@@ -1,7 +1,7 @@
 import * as express from "express";
 
-import { ServerContext } from "..";
 import { MintTransactionInputGroupValue } from "../../common/types/transactions";
+import { ServerContext } from "../context";
 
 export const createAssetApiRouter = (context: ServerContext) => {
     const router = express.Router();
