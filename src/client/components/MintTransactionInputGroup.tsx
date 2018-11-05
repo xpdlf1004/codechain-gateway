@@ -7,12 +7,9 @@ import {
   RegistrarSelectValue
 } from "../../common/types/transactions";
 
+import { InputGroupError } from "../input-group-error";
 import { RecipientSelect } from "./RecipientSelect";
 import { RegistrarSelect } from "./RegistrarSelect";
-
-export interface InputGroupError {
-  [inputName: string]: string;
-}
 
 interface Props {
   onChange?: (

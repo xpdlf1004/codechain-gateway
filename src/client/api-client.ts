@@ -1,4 +1,7 @@
-import { MintTransactionInputGroupValue } from "../common/types/transactions";
+import {
+    MintTransactionInputGroupValue,
+    TransferOutputInputGroupValue
+} from "../common/types/transactions";
 
 export class ApiClient {
     private baseUrl: string;
@@ -32,6 +35,13 @@ export class ApiClient {
         mintValue: MintTransactionInputGroupValue,
         feePayer: string
     ): Promise<string> => this.post("asset/mint", { feePayer, mintValue });
+    public transferAsset = (
+        transferValue: TransferOutputInputGroupValue,
+        sender: string,
+        feePayer: string
+    ): Promise<string> =>
+        this.post("asset/transfer", { feePayer, sender, transferValue });
+
     public getAssetOwners = (
         assetType: string
     ): Promise<{ [owner: string]: number }> =>

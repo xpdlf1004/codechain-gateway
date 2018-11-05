@@ -8,6 +8,7 @@ import { AssetAddressPage } from "./pages/AssetAddressPage";
 import { AssetDetailPage } from "./pages/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
 import { AssetPage } from "./pages/AssetPage";
+import { AssetTransferPage } from "./pages/AssetTransferPage";
 import { HomePage } from "./pages/HomePage";
 import { store } from "./store";
 
@@ -32,6 +33,7 @@ export const App = () => (
           <Route exact path="/asset" component={AssetListPage} />
           <Route exact path="/asset/address" component={AssetAddressPage} />
           <Route exact path="/asset/new" component={AssetPage} />
+          <Route exact path="/asset/transfer" component={AssetTransferPage} />
           <Route exact path="/asset/:assetType" component={AssetDetailPage} />
           <Route component={NotFound} />
         </Switch>

@@ -20,3 +20,9 @@ export interface MintTransactionInputGroupValue {
     metadata: string;
     registrar: RegistrarSelectValue;
 }
+
+export interface TransferOutputInputGroupValue {
+    recipient: RecipientSelectValue;
+    amount: number;
+    assetType: string;
+}

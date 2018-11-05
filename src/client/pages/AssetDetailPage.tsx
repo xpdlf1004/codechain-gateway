@@ -3,6 +3,7 @@ import { match } from "react-router";
 
 import { AssetSchemeDoc } from "codechain-indexer-types/lib/types";
 
+import { Link } from "react-router-dom";
 import { ApiClient } from "../api-client";
 
 interface Props {
@@ -63,6 +64,7 @@ export class AssetDetailPage extends React.Component<Props, States> {
   }
 
   private renderAssetOwners() {
+    const { assetType } = this.props.match.params;
     const { owners } = this.state;
     if (!owners) {
       return <div>Loading ... </div>;
@@ -78,9 +80,9 @@ export class AssetDetailPage extends React.Component<Props, States> {
             <span> ... </span>
             <span>{owners[address]}</span>
             <span>
-              <button disabled title="Not supported yet">
-                transfer
-              </button>
+              <Link to={`transfer?assetType=${assetType}&sender=${address}`}>
+                <button>transfer</button>
+              </Link>
             </span>
           </div>
         ))}

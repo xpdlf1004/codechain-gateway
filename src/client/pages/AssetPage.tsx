@@ -4,10 +4,8 @@ import { MintTransactionInputGroupValue } from "../../common/types/transactions"
 
 import { ApiClient } from "../api-client";
 import { FeePayerSelect } from "../components/FeePayerSelect";
-import {
-  InputGroupError,
-  MintTransactionInputGroup
-} from "../components/MintTransactionInputGroup";
+import { MintTransactionInputGroup } from "../components/MintTransactionInputGroup";
+import { InputGroupError } from "../input-group-error";
 
 interface States {
   mintValue: MintTransactionInputGroupValue;
