@@ -32,6 +32,10 @@ export class ApiClient {
         mintValue: MintTransactionInputGroupValue,
         feePayer: string
     ): Promise<string> => this.post("asset/mint", { feePayer, mintValue });
+    public getAssetOwners = (
+        assetType: string
+    ): Promise<{ [owner: string]: number }> =>
+        this.get(`asset/${assetType}/owners`);
 
     // AssetAddress
     public getAssetAddressList = (): Promise<{ addresses: string[] }> =>

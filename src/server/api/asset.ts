@@ -88,5 +88,26 @@ export const createAssetApiRouter = (context: ServerContext) => {
             });
     });
 
+    router.get("/:type/owners", async (req, res) => {
+        const { type } = req.params;
+        context.indexer
+            .getUTXOs(type)
+            .then(utxos => {
+                const ownerBalanceMap = utxos.reduce((map, utxo) => {
+                    const { address, amount } = utxo;
+                    if (address in map) {
+                        map[address] += amount;
+                    } else {
+                        map[address] = amount;
+                    }
+                    return map;
+                }, {});
+                res.status(200).json(ownerBalanceMap);
+            })
+            .catch(() => {
+                res.status(500).send();
+            });
+    });
+
     return router;
 };
