@@ -4,7 +4,7 @@ import { match } from "react-router";
 import { ApiClient } from "../api-client";
 
 interface Props {
-  match: match<{ address: string }>;
+  match: match<{ assetType: string }>;
 }
 
 interface States {
@@ -19,12 +19,12 @@ export class AssetDetailPage extends React.Component<Props, States> {
   }
 
   public componentDidMount() {
-    const { address } = this.props.match.params;
-    this.loadAssetDetail(address);
+    const { assetType } = this.props.match.params;
+    this.loadAssetDetail(assetType);
   }
 
   public render() {
-    const { address } = this.props.match.params;
+    const { assetType } = this.props.match.params;
     const { scheme, err } = this.state;
     if (err) {
       return <div>Error: {String(err)}</div>;
@@ -35,7 +35,7 @@ export class AssetDetailPage extends React.Component<Props, States> {
     const { metadata, registrar, amount } = scheme;
     return (
       <div>
-        Asset: {address}
+        Asset: {assetType}
         <br />
         metadata: {metadata}
         <br />
@@ -46,9 +46,9 @@ export class AssetDetailPage extends React.Component<Props, States> {
     );
   }
 
-  private loadAssetDetail(address: string) {
+  private loadAssetDetail(assetType: string) {
     new ApiClient()
-      .getAssetDetail(address)
+      .getAssetDetail(assetType)
       .then(assetScheme => {
         this.setState({
           scheme: assetScheme,

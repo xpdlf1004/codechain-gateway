@@ -33,6 +33,12 @@ export class ApiClient {
         feePayer: string
     ): Promise<string> => this.post("asset/mint", { feePayer, mintValue });
 
+    // AssetAddress
+    public getAssetAddressList = (): Promise<{ addresses: string[] }> =>
+        this.get(`asset-address/list`);
+    public removeAssetAddress = (address: string): Promise<void> =>
+        this.delete(`asset-address/${address}`);
+
     private get(path: string): Promise<any> {
         return fetch(`${this.baseUrl}/${path}`).then(r => r.json());
     }

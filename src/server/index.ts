@@ -5,6 +5,7 @@ import * as morgan from "morgan";
 
 import { createAccountApiRouter } from "./api/account";
 import { createAssetApiRouter } from "./api/asset";
+import { createAssetAddressApiRouter } from "./api/asset-address";
 import { createTransactionApiRouter } from "./api/transaction";
 import { getDefaultServerConfig } from "./config";
 import { createServerContext, ServerContext } from "./context";
@@ -30,6 +31,7 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
     app.use("/send_asset", createTransactionApiRouter(context));
     app.use("/account", createAccountApiRouter(context));
     app.use("/asset", createAssetApiRouter(context));
+    app.use("/asset-address", createAssetAddressApiRouter(context));
 
     app.use((req, res, next) => {
         res.status(404).send("Not Found");
