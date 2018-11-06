@@ -40,18 +40,18 @@ export class AccountPage extends React.Component<{}, States> {
           <div key={a}>
             <p>
               <Link to={`account/${a}`}>{a}</Link>
-              <button onClick={() => this.onClickRemove(a)}>x</button>
+              <button onClick={() => this.handleRemoveClick(a)}>x</button>
             </p>
           </div>
         ))}
         {accounts.length < 20 && (
-          <button onClick={this.onClickAdd}>Generate</button>
+          <button onClick={this.handleAddClick}>Generate</button>
         )}
       </div>
     );
   }
 
-  private onClickRemove = (address: string) => {
+  private handleRemoveClick = (address: string) => {
     new ApiClient()
       .removeAccount(address)
       .then(() => {
@@ -65,7 +65,7 @@ export class AccountPage extends React.Component<{}, States> {
       });
   };
 
-  private onClickAdd = () => {
+  private handleAddClick = () => {
     new ApiClient()
       .createAccount()
       .then(account => {
