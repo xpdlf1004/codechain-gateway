@@ -66,6 +66,9 @@ export const createAccountApiRouter = (context: ServerContext) => {
     router.delete("/:address", async (req, res) => {
         const { address } = req.params;
         try {
+            if ((await context.db.getFeePayer()) === address) {
+                throw Error(`Cannot remove fee-payer account`);
+            }
             const accountId = context.sdk.core.classes.PlatformAddress.fromString(
                 address
             ).getAccountId().value;
