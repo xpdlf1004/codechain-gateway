@@ -54,6 +54,8 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
+    "prompt-input": "^3.0.0",
+    "prompt-list": "^3.2.0",
     "query-string": "^6.2.0",
     "raf": "3.4.0",
     "react": "^16.6.0",
