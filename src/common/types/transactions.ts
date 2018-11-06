@@ -3,6 +3,7 @@ import {
     H160,
     PlatformAddress
 } from "codechain-primitives/lib";
+import { Transaction as CoreTransaction } from "codechain-sdk/lib/core/classes";
 
 export type RecipientSelectValue =
     | "create"
@@ -25,4 +26,13 @@ export interface TransferOutputInputGroupValue {
     recipient: RecipientSelectValue;
     amount: number;
     assetType: string;
+}
+
+export interface Transaction {
+    txhash: string;
+    tx: CoreTransaction;
+    created: number;
+    updated?: number | null;
+    origin: string;
+    status: string;
 }

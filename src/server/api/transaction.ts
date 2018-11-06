@@ -32,5 +32,14 @@ export const createTransactionApiRouter = (context: ServerContext) => {
         }
     });
 
+    router.get("/list", async (_, res) => {
+        context.db
+            .getTransactions()
+            .then(transactions => {
+                res.status(200).json({ transactions });
+            })
+            .catch(() => res.status(500).send());
+    });
+
     return router;
 };

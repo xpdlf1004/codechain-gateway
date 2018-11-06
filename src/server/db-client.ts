@@ -1,7 +1,9 @@
 import * as lowdb from "lowdb";
 import * as FileAsync from "lowdb/adapters/FileAsync";
 
-import { Transaction } from "codechain-sdk/lib/core/classes";
+import { Transaction as CoreTransaction } from "codechain-sdk/lib/core/classes";
+
+import { Transaction } from "../common/types/transactions";
 
 export class DatabaseLowdbClient {
     public static async create(path: string) {
@@ -42,7 +44,7 @@ export class DatabaseLowdbClient {
             .write();
     }
 
-    public async addTransaction(tx: Transaction, origin: string) {
+    public async addTransaction(tx: CoreTransaction, origin: string) {
         if (!this.db) {
             throw Error(`DatabaseClient is not initialized`);
         }
@@ -73,7 +75,7 @@ export class DatabaseLowdbClient {
             .write();
     }
 
-    public async getTransactions() {
+    public async getTransactions(): Promise<Transaction[]> {
         if (!this.db) {
             throw Error(`DatabaseClient is not initialized`);
         }

@@ -28,7 +28,7 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
         app.options("*", cors(corsOptions)).use(cors(corsOptions));
     }
 
-    app.use("/send_asset", createTransactionApiRouter(context));
+    app.use("/transaction", createTransactionApiRouter(context));
     app.use("/account", createAccountApiRouter(context));
     app.use("/asset", createAssetApiRouter(context));
     app.use("/asset-address", createAssetAddressApiRouter(context));

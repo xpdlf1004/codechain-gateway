@@ -10,6 +10,7 @@ import { AssetListPage } from "./pages/AssetListPage";
 import { AssetPage } from "./pages/AssetPage";
 import { AssetTransferPage } from "./pages/AssetTransferPage";
 import { HomePage } from "./pages/HomePage";
+import { TransactionPage } from "./pages/TransactionPage";
 import { store } from "./store";
 
 export const App = () => (
@@ -25,6 +26,8 @@ export const App = () => (
         <Link to="/asset/address">Asset Address</Link>
         <br />
         <Link to="/asset/new">Mint</Link>
+        <br />
+        <Link to="/transaction">Transaction</Link>
         <hr />
         <Switch>
           <Route exact path="/" component={HomePage} />
@@ -35,6 +38,7 @@ export const App = () => (
           <Route exact path="/asset/new" component={AssetPage} />
           <Route exact path="/asset/transfer" component={AssetTransferPage} />
           <Route exact path="/asset/:assetType" component={AssetDetailPage} />
+          <Route exact path="/transaction" component={TransactionPage} />
           <Route component={NotFound} />
         </Switch>
       </div>

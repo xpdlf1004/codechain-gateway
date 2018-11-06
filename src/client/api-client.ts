@@ -1,5 +1,6 @@
 import {
     MintTransactionInputGroupValue,
+    Transaction,
     TransferOutputInputGroupValue
 } from "../common/types/transactions";
 
@@ -52,6 +53,10 @@ export class ApiClient {
         this.get(`asset-address/list`);
     public removeAssetAddress = (address: string): Promise<void> =>
         this.delete(`asset-address/${address}`);
+
+    // Transaction
+    public getTransactionList = (): Promise<{ transactions: Transaction[] }> =>
+        this.get(`transaction/list`);
 
     private get(path: string): Promise<any> {
         return fetch(`${this.baseUrl}/${path}`).then(r => {
