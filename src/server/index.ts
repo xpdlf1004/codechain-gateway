@@ -55,4 +55,8 @@ async function main() {
     runWebServer(context, true);
 }
 
+process.on("unhandledRejection", err => {
+    console.error("unhandledRejection", err);
+});
+
 main();
