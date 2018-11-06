@@ -24,6 +24,23 @@ export const createAccountApiRouter = (context: ServerContext) => {
             });
     });
 
+    router.get("/fee-payer", async (_, res) => {
+        res.status(200).json(await context.db.getFeePayer());
+    });
+
+    router.post("/fee-payer", async (req, res) => {
+        const { address } = req.body;
+        context.db
+            .setFeePayer(address)
+            .then(() => {
+                res.status(200).json(null);
+            })
+            .catch(e => {
+                console.error(e);
+                res.status(500).send();
+            });
+    });
+
     router.get("/:address", async (req, res) => {
         const { address } = req.params;
         if (!context.sdk.core.classes.PlatformAddress.check(address)) {

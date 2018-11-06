@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ApiClient } from "../api-client";
 
 interface States {
+  feePayer?: string | null;
   accounts: string[] | null;
   err: string | null;
 }
@@ -20,10 +21,11 @@ export class AccountPage extends React.Component<{}, States> {
 
   public componentWillMount() {
     this.loadAccount();
+    this.loadFeePayer();
   }
 
   public render() {
-    const { accounts, err } = this.state;
+    const { accounts, err, feePayer } = this.state;
     if (err) {
       return <h1>Account Page errored: {err}</h1>;
     }
@@ -39,6 +41,13 @@ export class AccountPage extends React.Component<{}, States> {
         {accounts.map(a => (
           <div key={a}>
             <p>
+              <input
+                type="checkbox"
+                checked={feePayer === a}
+                onChange={e =>
+                  this.handleFeePayerCheckClick(a, e.target.checked)
+                }
+              />
               <Link to={`account/${a}`}>{a}</Link>
               <button onClick={() => this.handleRemoveClick(a)}>x</button>
             </p>
@@ -50,6 +59,21 @@ export class AccountPage extends React.Component<{}, States> {
       </div>
     );
   }
+
+  private handleFeePayerCheckClick = (address: string, checked: boolean) => {
+    if (checked) {
+      new ApiClient()
+        .setFeePayer(address)
+        .then(() => {
+          this.setState({ feePayer: address });
+        })
+        .catch(e => {
+          this.setState({ err: String(e) });
+        });
+    } else {
+      // FIXME: Not implemented
+    }
+  };
 
   private handleRemoveClick = (address: string) => {
     new ApiClient()
@@ -88,6 +112,17 @@ export class AccountPage extends React.Component<{}, States> {
       .then(({ accounts }) => {
         this.checkAccounts(accounts);
         this.setState({ accounts });
+      })
+      .catch(err => {
+        this.setState({ err: String(err) });
+      });
+  }
+
+  private loadFeePayer() {
+    new ApiClient()
+      .getFeePayer()
+      .then(feePayer => {
+        this.setState({ feePayer });
       })
       .catch(err => {
         this.setState({ err: String(err) });

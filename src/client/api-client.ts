@@ -21,6 +21,10 @@ export class ApiClient {
     public createAccount = (): Promise<string> => this.post("account/new");
     public removeAccount = (address: string): Promise<void> =>
         this.delete(`account/${address}`);
+    public getFeePayer = (): Promise<string | null> =>
+        this.get(`account/fee-payer`);
+    public setFeePayer = (address: string): Promise<void> =>
+        this.post(`account/fee-payer`, { address });
 
     // Asset
     public getAssetList = (): Promise<string[]> => this.get("asset/list");

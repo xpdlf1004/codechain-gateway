@@ -23,7 +23,7 @@ export class DatabaseLowdbClient {
     public async init() {
         const adapter = new FileAsync(this.path);
         this.db = await lowdb(adapter);
-        await this.db.defaults({ assets: [], txs: [] }).write();
+        await this.db.defaults({ assets: [], txs: [], feePayer: null }).write();
     }
 
     public async getAssetList(): Promise<string[]> {
@@ -81,5 +81,20 @@ export class DatabaseLowdbClient {
         }
         const transactions = this.db.get("txs").value();
         return Promise.resolve(transactions);
+    }
+
+    public async getFeePayer(): Promise<string | null> {
+        if (!this.db) {
+            throw Error(`DatabaseClient is not initialized`);
+        }
+        const feePayer = this.db.get("feePayer").value();
+        return Promise.resolve(feePayer);
+    }
+
+    public async setFeePayer(address: string): Promise<void> {
+        if (!this.db) {
+            throw Error(`DatabaseClient is not initialized`);
+        }
+        return this.db.set("feePayer", address).write();
     }
 }
