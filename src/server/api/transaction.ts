@@ -25,6 +25,7 @@ export const createTransactionApiRouter = (context: ServerContext) => {
                 passphrase: platformPassphrase
             });
             await context.sdk.rpc.chain.sendSignedParcel(signedParcel);
+            await context.db.addTransaction(tx, "api");
             // FIXME: Use a valid protocal format
             res.json("success");
         } catch (e) {
