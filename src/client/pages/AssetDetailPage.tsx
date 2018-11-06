@@ -75,7 +75,7 @@ export class AssetDetailPage extends React.Component<Props, States> {
         <br />
         <span>Total {Object.keys(owners).length} owners</span>
         {Object.keys(owners).map(address => (
-          <div key="address">
+          <div key={address}>
             <span>{address}</span>
             <span> ... </span>
             <span>{owners[address]}</span>
