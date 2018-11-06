@@ -62,10 +62,7 @@ export const createAssetApiRouter = (context: ServerContext) => {
             .then(hash =>
                 Promise.all([
                     hash,
-                    context.db
-                        .get("assets")
-                        .push(mintTx.getMintedAsset().assetType.value)
-                        .write()
+                    context.db.addAsset(mintTx.getMintedAsset().assetType.value)
                 ])
             )
             .then(([hash]) => {
@@ -157,7 +154,7 @@ export const createAssetApiRouter = (context: ServerContext) => {
     });
 
     router.get("/list", async (req, res) => {
-        res.status(200).json(context.db.get("assets").value());
+        res.status(200).json(await context.db.getAssetList());
     });
 
     router.get("/:type", async (req, res) => {

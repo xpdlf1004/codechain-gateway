@@ -1,13 +1,11 @@
-import * as lowdb from "lowdb";
-
 import { CCKey } from "codechain-keystore";
 import { SDK } from "codechain-sdk";
 import { ServerConfig } from "./config";
-import { createDb } from "./db";
+import { DatabaseLowdbClient } from "./db-client";
 import { IndexerClient } from "./indexer-client";
 
 export interface ServerContext {
-    db: lowdb.LowdbAsync<any>;
+    db: DatabaseLowdbClient;
     sdk: SDK;
     cckey: CCKey;
     indexer: IndexerClient;
@@ -17,7 +15,7 @@ export interface ServerContext {
 
 export const createServerContext = async (config: ServerConfig) => {
     return {
-        db: await createDb(config.dbPath),
+        db: await DatabaseLowdbClient.create(config.dbPath),
         // FIXME: Extract networkId to the config file or environment variables
         sdk: new SDK({
             server: config.rpcHttp,

@@ -45,7 +45,6 @@ const runWebServer = async (context: ServerContext, useCors = false) => {
 async function main() {
     const config = getDefaultServerConfig();
     const context = await createServerContext(config);
-    await context.db.defaults({ counter: 0, assets: [] }).write();
     try {
         await context.sdk.rpc.node.ping();
         console.log("CodeChain node connected successfully");
