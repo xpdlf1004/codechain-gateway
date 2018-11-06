@@ -54,7 +54,12 @@ export class ApiClient {
         this.delete(`asset-address/${address}`);
 
     private get(path: string): Promise<any> {
-        return fetch(`${this.baseUrl}/${path}`).then(r => r.json());
+        return fetch(`${this.baseUrl}/${path}`).then(r => {
+            if (r.status >= 400) {
+                return Promise.reject(Error(`GET ${path}: ${r.statusText}`));
+            }
+            return r.json();
+        });
     }
 
     private post(path: string, body?: any): Promise<any> {
