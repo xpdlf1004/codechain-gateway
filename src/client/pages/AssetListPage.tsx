@@ -29,6 +29,11 @@ export class AssetListPage extends React.Component<{}, States> {
     }
     return (
       <div>
+        <div>
+          <Link to={`/Asset/new`}>Mint a new asset</Link>
+        </div>
+        <br />
+
         <span>Total {assets.length} assets</span>
         {assets.map(a => (
           <div key={a}>

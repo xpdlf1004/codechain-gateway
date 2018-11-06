@@ -25,9 +25,7 @@ export const App = () => (
         <br />
         <Link to="/asset/address">Asset Address</Link>
         <br />
-        <Link to="/asset/new">Mint</Link>
-        <br />
-        <Link to="/transaction">Transaction</Link>
+        <Link to="/transaction">Transaction List</Link>
         <hr />
         <Switch>
           <Route exact path="/" component={HomePage} />
