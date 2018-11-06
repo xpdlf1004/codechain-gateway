@@ -7,7 +7,7 @@ import { AccountPage } from "./pages/AccountPage";
 import { AssetAddressPage } from "./pages/AssetAddressPage";
 import { AssetDetailPage } from "./pages/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
-import { AssetPage } from "./pages/AssetPage";
+import { AssetMintPage } from "./pages/AssetMintPage";
 import { AssetTransferPage } from "./pages/AssetTransferPage";
 import { HomePage } from "./pages/HomePage";
 import { TransactionPage } from "./pages/TransactionPage";
@@ -35,7 +35,7 @@ export const App = () => (
           <Route exact path="/account/:address" component={AccountDetailPage} />
           <Route exact path="/asset" component={AssetListPage} />
           <Route exact path="/asset/address" component={AssetAddressPage} />
-          <Route exact path="/asset/new" component={AssetPage} />
+          <Route exact path="/asset/new" component={AssetMintPage} />
           <Route exact path="/asset/transfer" component={AssetTransferPage} />
           <Route exact path="/asset/:assetType" component={AssetDetailPage} />
           <Route exact path="/transaction" component={TransactionPage} />
