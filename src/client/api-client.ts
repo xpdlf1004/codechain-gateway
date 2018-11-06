@@ -78,10 +78,24 @@ export class ApiClient {
                 "Content-Type": "application/json"
             },
             body: body === undefined ? undefined : JSON.stringify(body)
-        }).then(r => r.json());
+        }).then(r => {
+            if (r.status >= 400) {
+                return Promise.reject(Error(`POST ${path}: ${r.statusText}`));
+            }
+            return r.json();
+        });
     }
 
     private delete(path: string): Promise<any> {
-        return fetch(`${this.baseUrl}/${path}`, { method: "DELETE" });
+        return fetch(`${this.baseUrl}/${path}`, { method: "DELETE" }).then(
+            r => {
+                if (r.status >= 400) {
+                    return Promise.reject(
+                        Error(`DELETE ${path}: ${r.statusText}`)
+                    );
+                }
+                return Promise.resolve(r);
+            }
+        );
     }
 }
