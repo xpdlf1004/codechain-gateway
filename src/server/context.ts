@@ -5,14 +5,18 @@ import { DatabaseLowdbClient } from "./db-client";
 import { IndexerClient } from "./indexer-client";
 
 export interface ServerContext {
+    config: ServerConfig;
     db: DatabaseLowdbClient;
     sdk: SDK;
     cckey: CCKey;
     indexer: IndexerClient;
 }
 
-export const createServerContext = async (config: ServerConfig) => {
+export const createServerContext = async (
+    config: ServerConfig
+): Promise<ServerContext> => {
     return {
+        config,
         db: await DatabaseLowdbClient.create(config.dbPath),
         // FIXME: Extract networkId to the config file or environment variables
         sdk: new SDK({

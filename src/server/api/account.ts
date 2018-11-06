@@ -6,7 +6,10 @@ export const createAccountApiRouter = (context: ServerContext) => {
     const router = express.Router();
 
     router.get("/list", async (_, res) => {
-        const keys = await context.cckey.platform.getKeys();
+        const keystore = await context.sdk.key.createLocalKeyStore(
+            context.config.keystorePath
+        );
+        const keys = await keystore.platform.getKeyList();
         const accounts = keys.map(k =>
             context.sdk.core.classes.PlatformAddress.fromAccountId(k).toString()
         );

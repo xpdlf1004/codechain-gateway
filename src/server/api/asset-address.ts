@@ -6,7 +6,10 @@ export const createAssetAddressApiRouter = (context: ServerContext) => {
     const router = express.Router();
 
     router.get("/list", async (_, res) => {
-        const keys = await context.cckey.asset.getKeys();
+        const keystore = await context.sdk.key.createLocalKeyStore(
+            context.config.keystorePath
+        );
+        const keys = await keystore.asset.getKeyList();
         const addresses = keys.map(k =>
             context.sdk.core.classes.AssetTransferAddress.fromTypeAndPayload(
                 1,
