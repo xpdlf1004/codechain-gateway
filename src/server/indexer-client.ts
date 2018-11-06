@@ -5,16 +5,20 @@ import { UTXO } from "codechain-indexer-types/lib/types";
 export class IndexerClient {
     private baseUrl: string;
 
-    constructor(baseUrl: string) {
+    constructor(baseUrl: string, options?: { ping?: boolean }) {
         this.baseUrl = baseUrl;
 
-        this.call("ping")
-            .then(() => {
-                console.info("indexer ping succeeded");
-            })
-            .catch(e => {
-                console.warn(`indexer ping failed: `, e);
-            });
+        const { ping = false } = options || {};
+
+        if (ping) {
+            this.call("ping")
+                .then(() => {
+                    console.info("indexer ping succeeded");
+                })
+                .catch(e => {
+                    console.warn(`indexer ping failed: `, e);
+                });
+        }
     }
 
     public getAssetInfo(type: string): Promise<any> {

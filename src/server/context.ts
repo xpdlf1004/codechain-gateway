@@ -27,7 +27,9 @@ export const createServerContext = async (
                 path: config.keystorePath
             }
         }),
-        indexer: new IndexerClient("https://husky.codechain.io/explorer/api/"),
+        indexer: new IndexerClient("https://husky.codechain.io/explorer/api/", {
+            ping: true
+        }),
         cckey: await CCKey.create({ dbPath: config.keystorePath })
     };
 };
