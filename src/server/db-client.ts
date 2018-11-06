@@ -1,6 +1,8 @@
 import * as lowdb from "lowdb";
 import * as FileAsync from "lowdb/adapters/FileAsync";
 
+import { Transaction } from "codechain-sdk/lib/core/classes";
+
 export class DatabaseLowdbClient {
     public static async create(path: string) {
         const instance = new this(path);
@@ -19,7 +21,7 @@ export class DatabaseLowdbClient {
     public async init() {
         const adapter = new FileAsync(this.path);
         this.db = await lowdb(adapter);
-        await this.db.defaults({ assets: [] }).write();
+        await this.db.defaults({ assets: [], txs: [] }).write();
     }
 
     public async getAssetList(): Promise<string[]> {
@@ -38,5 +40,44 @@ export class DatabaseLowdbClient {
             .get("assets")
             .push(assetType)
             .write();
+    }
+
+    public async addTransaction(tx: Transaction, origin: string) {
+        if (!this.db) {
+            throw Error(`DatabaseClient is not initialized`);
+        }
+        const txhash = tx.hash().value;
+        const created = Date.now();
+        const status = "processing";
+        return this.db
+            .get("txs")
+            .push({
+                txhash,
+                tx: tx.toJSON(),
+                created,
+                origin,
+                status
+            })
+            .write();
+    }
+
+    public async updateTransactionStatus(txhash: string, status: string) {
+        if (!this.db) {
+            throw Error(`DatabaseClient is not initialized`);
+        }
+        const updated = Date.now();
+        return this.db
+            .get("txs")
+            .find({ txhash })
+            .assign({ status, updated })
+            .write();
+    }
+
+    public async getTransactions() {
+        if (!this.db) {
+            throw Error(`DatabaseClient is not initialized`);
+        }
+        const transactions = this.db.get("txs").value();
+        return Promise.resolve(transactions);
     }
 }

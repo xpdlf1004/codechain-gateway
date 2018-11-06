@@ -62,7 +62,10 @@ export const createAssetApiRouter = (context: ServerContext) => {
             .then(hash =>
                 Promise.all([
                     hash,
-                    context.db.addAsset(mintTx.getMintedAsset().assetType.value)
+                    context.db.addAsset(
+                        mintTx.getMintedAsset().assetType.value
+                    ),
+                    context.db.addTransaction(mintTx, "admin")
                 ])
             )
             .then(([hash]) => {
