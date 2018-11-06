@@ -10,7 +10,9 @@ interface Props {
 }
 
 interface States {
-  showNonAddressInputs: boolean;
+  showAddressInput: boolean;
+  manualInputAddress: string;
+  showLockScriptHashInput: boolean;
   lockScriptHash: string;
 }
 
@@ -19,34 +21,57 @@ export class RecipientSelect extends React.Component<Props, States> {
     super(props);
 
     this.state = {
-      showNonAddressInputs: false,
-      lockScriptHash: ""
+      showLockScriptHashInput: false,
+      showAddressInput: false,
+      lockScriptHash: "",
+      manualInputAddress: ""
     };
   }
 
   public render() {
-    const { showNonAddressInputs } = this.state;
+    const { showLockScriptHashInput, showAddressInput } = this.state;
     return (
       <div>
         <select onChange={this.handleSelectChange}>
           <option value="create">Create a new address</option>
+          <option value="manual">Type manually</option>
           <option value="address">LockScriptHash (For advanced users)</option>
         </select>
-        {showNonAddressInputs && (
-          <div>
+        {showLockScriptHashInput && (
+          <span>
             LockScriptHash:
             <input
               onChange={this.handleLockScriptHashChange}
               value={this.state.lockScriptHash}
             />
-            <br />
             Parameters:
             <input disabled title="Not implemented yet" />
-          </div>
+          </span>
+        )}
+        {showAddressInput && (
+          <span>
+            <input
+              onChange={this.handleManualAddressInputChange}
+              value={this.state.manualInputAddress}
+            />
+          </span>
         )}
       </div>
     );
   }
+
+  private handleManualAddressInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.setState({
+      manualInputAddress: e.target.value
+    });
+    try {
+      this.emitChange(null, AssetTransferAddress.ensure(e.target.value));
+    } catch (err) {
+      this.emitChange(`"${e.target.value}" is not an asset transfer address`);
+    }
+  };
 
   private handleLockScriptHashChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -67,13 +92,25 @@ export class RecipientSelect extends React.Component<Props, States> {
   private handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // FIXME: Make sure that e.target.value is a correct usage.
     this.setState({
-      showNonAddressInputs: e.target.value === "address"
+      showLockScriptHashInput: e.target.value === "address",
+      showAddressInput: e.target.value === "manual"
     });
     let recipient: RecipientSelectValue;
 
     switch (e.target.value) {
       case "create":
         recipient = "create";
+        break;
+      case "manual":
+        try {
+          recipient = AssetTransferAddress.ensure(
+            this.state.manualInputAddress
+          );
+        } catch (err) {
+          return this.emitChange(
+            `"${e.target.value}" is not an asset transfer address`
+          );
+        }
         break;
       case "address":
         if (!H160.check(this.state.lockScriptHash)) {
