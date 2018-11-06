@@ -26,11 +26,14 @@ export const createTransactionApiRouter = (context: ServerContext) => {
                 nonce
             });
             await context.sdk.rpc.chain.sendSignedParcel(signedParcel);
-            await context.db.addTransaction(tx, "api");
+            await context.db.addTransaction(
+                AssetTransferTransaction.fromJSON(tx),
+                "api"
+            );
             // FIXME: Use a valid protocal format
             res.json("success");
         } catch (e) {
-            res.sendStatus(500).send(e.message);
+            res.status(500).send();
         }
     });
 
