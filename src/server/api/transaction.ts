@@ -11,18 +11,19 @@ export const createTransactionApiRouter = (context: ServerContext) => {
         const { tx } = req.body;
         try {
             const keyStore = await context.sdk.key.createLocalKeyStore();
-            const platformAddress = context.platformAddress;
-            const platformPassphrase = context.passphrase;
-            const nonce = await context.sdk.rpc.chain.getNonce(platformAddress);
+            const feePayer = await context.db.getFeePayer();
+            if (feePayer == null) {
+                throw Error("No fee-payer exist");
+            }
+            const nonce = await context.sdk.rpc.chain.getNonce(feePayer);
             const parcel = context.sdk.core.createAssetTransactionGroupParcel({
                 transactions: [AssetTransferTransaction.fromJSON(tx)]
             });
             const signedParcel = await context.sdk.key.signParcel(parcel, {
-                account: platformAddress,
+                account: feePayer,
                 keyStore,
                 fee: 10,
-                nonce,
-                passphrase: platformPassphrase
+                nonce
             });
             await context.sdk.rpc.chain.sendSignedParcel(signedParcel);
             await context.db.addTransaction(tx, "api");

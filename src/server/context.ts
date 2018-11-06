@@ -9,8 +9,6 @@ export interface ServerContext {
     sdk: SDK;
     cckey: CCKey;
     indexer: IndexerClient;
-    platformAddress: string;
-    passphrase: string;
 }
 
 export const createServerContext = async (config: ServerConfig) => {
@@ -26,9 +24,6 @@ export const createServerContext = async (config: ServerConfig) => {
             }
         }),
         indexer: new IndexerClient("https://husky.codechain.io/explorer/api/"),
-        cckey: await CCKey.create({ dbPath: config.keystorePath }),
-        // FIXME: Extract the address and passphrase to the config file or environment variables
-        platformAddress: "tccq9wp2p6655qrjfvlw80g9rl5klg84y3emu2vd00s",
-        passphrase: "test password"
+        cckey: await CCKey.create({ dbPath: config.keystorePath })
     };
 };
