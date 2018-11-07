@@ -31,7 +31,7 @@ export class RecipientSelect extends React.Component<Props, States> {
   public render() {
     const { showLockScriptHashInput, showAddressInput } = this.state;
     return (
-      <div>
+      <>
         <select onChange={this.handleSelectChange}>
           <option value="create">Create a new address</option>
           <option value="manual">Type manually</option>
@@ -56,7 +56,7 @@ export class RecipientSelect extends React.Component<Props, States> {
             />
           </span>
         )}
-      </div>
+      </>
     );
   }
 

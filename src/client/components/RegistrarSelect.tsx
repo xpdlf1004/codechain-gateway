@@ -28,7 +28,7 @@ export class RegistrarSelect extends React.Component<Props, States> {
     const { addresses } = this.props;
     const { addressInputValue, showInput } = this.state;
     return (
-      <div>
+      <>
         <select onChange={this.handleSelectChange}>
           <option value="none">None</option>
           {addresses &&
@@ -40,15 +40,14 @@ export class RegistrarSelect extends React.Component<Props, States> {
           <option value="manual">Type manually (For advanced users)</option>
         </select>
         {showInput && (
-          <div>
-            Address:
+          <>
             <input
               value={addressInputValue}
               onChange={this.handleAddressInputChange}
             />
-          </div>
+          </>
         )}
-      </div>
+      </>
     );
   }
 

@@ -37,21 +37,25 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
       }
     };
   }
+
   public render() {
     return (
       <div>
+        <fieldset>
+          <legend>Asset Scheme</legend>
+          <div>
+            Metadata: <input onChange={this.handleMetadataChange} />
+          </div>
+          <div>
+            Registrar:
+            <RegistrarSelect onChange={this.handleRegistrarSelectChange} />
+          </div>
+          <div>
+            Amount <input onChange={this.handleAmountChange} />
+          </div>
+        </fieldset>
         <div>
           Recipient: <RecipientSelect onChange={this.handleRecipientChange} />
-        </div>
-        <div>
-          Metadata: <input onChange={this.handleMetadataChange} />
-        </div>
-        <div>
-          Amount <input onChange={this.handleAmountChange} />
-        </div>
-        <div>
-          {"Registrar "}
-          <RegistrarSelect onChange={this.handleRegistrarSelectChange} />
         </div>
       </div>
     );
