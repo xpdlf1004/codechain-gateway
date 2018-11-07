@@ -3,20 +3,28 @@ import * as React from "react";
 import { PlatformAddress } from "codechain-primitives/lib";
 
 import { RegistrarSelectValue } from "../../common/types/transactions";
+import { ApiClient } from "../api-client";
 
 interface Props {
-  addresses?: PlatformAddress[];
   onChange?: (value: RegistrarSelectValue) => void;
   value?: RegistrarSelectValue;
 }
 
-export class RegistrarSelect extends React.Component<Props> {
+interface States {
+  addresses?: string[];
+  err?: string;
+}
+
+export class RegistrarSelect extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
+
+    this.state = {};
+    this.loadRegistrar();
   }
 
   public render() {
-    const { addresses } = this.props;
+    const { addresses, err } = this.state;
     return (
       <>
         <select
@@ -34,6 +42,8 @@ export class RegistrarSelect extends React.Component<Props> {
             Type manually (For advanced users) (Not implemented)
           </option>
         </select>
+        {addresses === undefined && <span>Loading account list</span>}
+        {err && <span>Errored while loading account list: {err}</span>}
       </>
     );
   }
@@ -41,10 +51,6 @@ export class RegistrarSelect extends React.Component<Props> {
   private handleSelectChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    this.setState({
-      selectValue: event.target.value
-    });
-
     if (event.target.value === "none") {
       return this.emitChange("none");
     }
@@ -56,4 +62,20 @@ export class RegistrarSelect extends React.Component<Props> {
       this.props.onChange(address);
     }
   };
+
+  private loadRegistrar() {
+    new ApiClient()
+      .getAccountList()
+      .then(({ accounts }) => {
+        this.setState({
+          addresses: accounts
+        });
+      })
+      .catch(err => {
+        this.setState({
+          addresses: [],
+          err
+        });
+      });
+  }
 }
