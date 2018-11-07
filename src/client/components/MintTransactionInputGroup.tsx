@@ -48,7 +48,10 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
           </div>
           <div>
             Registrar:
-            <RegistrarSelect onChange={this.handleRegistrarSelectChange} />
+            <RegistrarSelect
+              onChange={this.handleRegistrarSelectChange}
+              value={this.state.data.registrar}
+            />
           </div>
           <div>
             Amount <input onChange={this.handleAmountChange} />
@@ -125,26 +128,14 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
     this.emitChange(newState.errors, newState.data);
   };
 
-  private handleRegistrarSelectChange = (
-    err: string | null,
-    address: RegistrarSelectValue
-  ) => {
-    if (err) {
-      const errors = update(this.state.errors, {
-        registrar: {
-          $set: String(err)
-        }
-      });
-      this.setState({ errors });
-      return this.emitChange(errors);
-    }
+  private handleRegistrarSelectChange = (value: RegistrarSelectValue) => {
     const newState = update(this.state, {
       errors: {
         $unset: ["registrar"]
       },
       data: {
         registrar: {
-          $set: address
+          $set: value
         }
       }
     });

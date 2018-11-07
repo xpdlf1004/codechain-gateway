@@ -5,34 +5,29 @@ import { PlatformAddress } from "codechain-primitives/lib";
 import { RegistrarSelectValue } from "../../common/types/transactions";
 
 interface Props {
-  addresses?: string[];
-  onChange?: (err: string | null, address?: RegistrarSelectValue) => void;
+  addresses?: PlatformAddress[];
+  onChange?: (value: RegistrarSelectValue) => void;
+  value?: RegistrarSelectValue;
 }
 
-interface States {
-  selectValue: "none" | string;
-}
-
-export class RegistrarSelect extends React.Component<Props, States> {
+export class RegistrarSelect extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      selectValue: "none"
-    };
   }
 
   public render() {
     const { addresses } = this.props;
-    const { selectValue } = this.state;
     return (
       <>
-        <select onChange={this.handleSelectChange} value={selectValue}>
+        <select
+          onChange={this.handleSelectChange}
+          value={this.props.value && this.props.value.toString()}
+        >
           <option value="none">None</option>
           {addresses &&
             addresses.map(a => (
-              <option key={a} value={a}>
-                a
+              <option key={a.toString()} value={a.toString()}>
+                {a.toString()}
               </option>
             ))}
           <option value="manual" disabled>
@@ -51,19 +46,14 @@ export class RegistrarSelect extends React.Component<Props, States> {
     });
 
     if (event.target.value === "none") {
-      return this.emitChange(null, "none");
+      return this.emitChange("none");
     }
-
-    try {
-      this.emitChange(null, PlatformAddress.fromString(event.target.value));
-    } catch (e) {
-      this.emitChange(String(e));
-    }
+    this.emitChange(PlatformAddress.fromString(event.target.value));
   };
 
-  private emitChange = (err: string | null, address?: RegistrarSelectValue) => {
+  private emitChange = (address: RegistrarSelectValue) => {
     if (this.props.onChange) {
-      this.props.onChange(err, address);
+      this.props.onChange(address);
     }
   };
 }
