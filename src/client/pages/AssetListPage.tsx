@@ -30,7 +30,7 @@ export class AssetListPage extends React.Component<{}, States> {
     return (
       <div>
         <div>
-          <Link to={`/Asset/new`}>Mint a new asset</Link>
+          <Link to={`/asset/new`}>Mint a new asset</Link>
         </div>
         <br />
 
