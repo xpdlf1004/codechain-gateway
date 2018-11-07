@@ -10,8 +10,7 @@ interface Props {
 }
 
 interface States {
-  showInput: boolean;
-  addressInputValue: string;
+  selectValue: "none" | string;
 }
 
 export class RegistrarSelect extends React.Component<Props, States> {
@@ -19,17 +18,16 @@ export class RegistrarSelect extends React.Component<Props, States> {
     super(props);
 
     this.state = {
-      showInput: false,
-      addressInputValue: ""
+      selectValue: "none"
     };
   }
 
   public render() {
     const { addresses } = this.props;
-    const { addressInputValue, showInput } = this.state;
+    const { selectValue } = this.state;
     return (
       <>
-        <select onChange={this.handleSelectChange}>
+        <select onChange={this.handleSelectChange} value={selectValue}>
           <option value="none">None</option>
           {addresses &&
             addresses.map(a => (
@@ -37,49 +35,27 @@ export class RegistrarSelect extends React.Component<Props, States> {
                 a
               </option>
             ))}
-          <option value="manual">Type manually (For advanced users)</option>
+          <option value="manual" disabled>
+            Type manually (For advanced users) (Not implemented)
+          </option>
         </select>
-        {showInput && (
-          <>
-            <input
-              value={addressInputValue}
-              onChange={this.handleAddressInputChange}
-            />
-          </>
-        )}
       </>
     );
   }
 
-  private handleAddressInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+  private handleSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     this.setState({
-      addressInputValue: e.target.value
-    });
-    try {
-      this.emitChange(null, PlatformAddress.fromString(e.target.value));
-    } catch (e) {
-      this.emitChange(String(e));
-    }
-  };
-
-  private handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // FIXME: Make sure that e.target.value is a correct usage.
-    this.setState({
-      showInput: e.target.value === "manual"
+      selectValue: event.target.value
     });
 
-    if (e.target.value === "none") {
+    if (event.target.value === "none") {
       return this.emitChange(null, "none");
     }
 
-    const input =
-      e.target.value === "manual"
-        ? this.state.addressInputValue
-        : e.target.value;
     try {
-      this.emitChange(null, PlatformAddress.fromString(input));
+      this.emitChange(null, PlatformAddress.fromString(event.target.value));
     } catch (e) {
       this.emitChange(String(e));
     }
