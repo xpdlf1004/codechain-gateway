@@ -30,6 +30,7 @@ export class AssetMintPage extends React.Component<{}, States> {
       inputGroupError: {}
     };
   }
+
   public render() {
     const { txError, inputGroupError, parcelHash } = this.state;
     if (txError) {
@@ -54,7 +55,7 @@ export class AssetMintPage extends React.Component<{}, States> {
         <span title={Object.keys(inputGroupError).join(" ")}>
           <button
             onClick={this.handleSendClick}
-            disabled={Object.keys(inputGroupError).length > 0}
+            disabled={this.shouldDisableSubmit}
           >
             Send Transaction
           </button>
@@ -69,6 +70,10 @@ export class AssetMintPage extends React.Component<{}, States> {
         )}
       </div>
     );
+  }
+
+  private get shouldDisableSubmit(): boolean {
+    return Object.keys(this.state.inputGroupError).length > 0;
   }
 
   private handleFeePayerSelectChange = (
