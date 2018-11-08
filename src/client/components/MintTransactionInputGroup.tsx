@@ -28,14 +28,22 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
     super(props);
 
     this.state = {
-      errors: {},
+      errors: {
+        amount: "amount must be a positive integer"
+      },
       data: {
         recipient: "create",
-        amount: 1,
+        amount: 0,
         metadata: "",
         registrar: "none"
       }
     };
+  }
+
+  public componentDidMount() {
+    if (Object.keys(this.state.errors)) {
+      this.emitChange(this.state.errors);
+    }
   }
 
   public render() {
@@ -54,7 +62,7 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
             />
           </div>
           <div>
-            Amount <input onChange={this.handleAmountChange} />
+            Amount <input onChange={this.handleAmountChange} defaultValue="0" />
           </div>
         </fieldset>
         <div>
