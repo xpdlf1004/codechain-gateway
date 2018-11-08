@@ -62,6 +62,12 @@ export class ApiClient {
     public getTransactionList = (): Promise<{ transactions: Transaction[] }> =>
         this.get(`transaction/list`);
 
+    public uploadImage = (image: File): Promise<{ url: string }> => {
+        const formData = new FormData();
+        formData.append("image", image);
+        return this.post(`image`, formData);
+    };
+
     private get(path: string): Promise<any> {
         return fetch(`${this.baseUrl}/${path}`).then(r => {
             if (r.status >= 400) {
@@ -72,13 +78,21 @@ export class ApiClient {
     }
 
     private post(path: string, body?: any): Promise<any> {
-        return fetch(`${this.baseUrl}/${path}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: body === undefined ? undefined : JSON.stringify(body)
-        }).then(r => {
+        const init =
+            body instanceof FormData
+                ? {
+                      method: "POST",
+                      body
+                  }
+                : {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json"
+                      },
+                      body:
+                          body === undefined ? undefined : JSON.stringify(body)
+                  };
+        return fetch(`${this.baseUrl}/${path}`, init).then(r => {
             if (r.status >= 400) {
                 return Promise.reject(Error(`POST ${path}: ${r.statusText}`));
             }
