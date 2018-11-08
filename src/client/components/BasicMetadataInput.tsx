@@ -1,5 +1,7 @@
 import update from "immutability-helper";
 import * as React from "react";
+import Dropzone, { DropFileEventHandler } from "react-dropzone";
+import { ApiClient } from "../api-client";
 
 export interface BasicMetadataInputValue {
   name: string;
@@ -14,6 +16,7 @@ interface Props {
 
 interface States {
   value: BasicMetadataInputValue;
+  uploadedImageUrl?: string;
 }
 
 export class BasicMetadataInput extends React.Component<Props, States> {
@@ -41,6 +44,7 @@ export class BasicMetadataInput extends React.Component<Props, States> {
   }
 
   public render() {
+    const { uploadedImageUrl } = this.state;
     const { name, description, iconUrl } = this.state.value;
     return (
       <fieldset>
@@ -49,10 +53,50 @@ export class BasicMetadataInput extends React.Component<Props, States> {
         Description:
         <input value={description} onChange={this.handleDescriptionChange} />
         <br />
-        Icon URL: <input value={iconUrl} onChange={this.handleIconUrlChange} />
+        Icon URL:{" "}
+        <input
+          value={iconUrl}
+          onChange={this.handleIconUrlChange}
+          disabled={!!uploadedImageUrl}
+        />
+        <Dropzone
+          accept={"image/*"}
+          onDropAccepted={this.handleImageDrop}
+          multiple={false}
+        >
+          {uploadedImageUrl ? (
+            <>
+              <img src={uploadedImageUrl} width="50" />
+              <button onClick={this.handleUploadedImageRemoveClick}>
+                Delete
+              </button>
+            </>
+          ) : (
+            "You can upload an image"
+          )}
+        </Dropzone>
       </fieldset>
     );
   }
+
+  private handleUploadedImageRemoveClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    this.setState({
+      uploadedImageUrl: undefined
+    });
+    this.updateIconUrl("");
+  };
+
+  private handleImageDrop: DropFileEventHandler = ([file]) => {
+    new ApiClient().uploadImage(file).then(({ url }) => {
+      this.setState({
+        uploadedImageUrl: url
+      });
+      this.updateIconUrl(url);
+    });
+  };
 
   private handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = update(this.state.value, {
@@ -79,9 +123,13 @@ export class BasicMetadataInput extends React.Component<Props, States> {
   private handleIconUrlChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    this.updateIconUrl(event.target.value);
+  };
+
+  private updateIconUrl = (url: string) => {
     const newValue = update(this.state.value, {
       iconUrl: {
-        $set: event.target.value
+        $set: url
       }
     });
     this.setState({ value: newValue });
