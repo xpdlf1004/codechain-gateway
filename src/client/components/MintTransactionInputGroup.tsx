@@ -8,6 +8,7 @@ import {
 } from "../../common/types/transactions";
 
 import { InputGroupError } from "../input-group-error";
+import { MetadataInput, MetadataInputValue } from "./MetadataInput";
 import { RecipientSelect } from "./RecipientSelect";
 import { RegistrarSelect } from "./RegistrarSelect";
 
@@ -52,7 +53,7 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
         <fieldset>
           <legend>Asset Scheme</legend>
           <div>
-            Metadata: <input onChange={this.handleMetadataChange} />
+            Metadata: <MetadataInput onChange={this.handleMetadataChange} />
           </div>
           <div>
             Registrar:
@@ -97,15 +98,30 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
     this.emitChange(newState.errors, newState.data);
   };
 
-  private handleMetadataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const data = {
-      ...this.state.data,
-      metadata: e.target.value
-    };
+  private handleMetadataChange = (value: MetadataInputValue) => {
+    let newData;
+    switch (value.type) {
+      case "basic":
+        newData = update(this.state.data, {
+          metadata: {
+            $set: JSON.stringify(value.value)
+          }
+        });
+        break;
+      case "manual":
+        newData = update(this.state.data, {
+          metadata: {
+            $set: value.value
+          }
+        });
+        break;
+      default:
+        throw Error(`Unexpected error`);
+    }
     this.setState({
-      data
+      data: newData
     });
-    this.emitChange(null, data);
+    this.emitChange(this.state.errors, newData);
   };
 
   private handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
