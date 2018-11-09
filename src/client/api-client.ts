@@ -1,3 +1,4 @@
+import { AssetRule } from "../common/types/rules";
 import {
     MintTransactionInputGroupValue,
     Transaction,
@@ -67,6 +68,12 @@ export class ApiClient {
         formData.append("image", image);
         return this.post(`image`, formData);
     };
+
+    // Transaction Rules
+    public getAssetRule = (assetType: string): Promise<AssetRule> =>
+        this.get(`transaction/rule/asset/${assetType}`);
+    public setAssetRule = (assetType: string, rule: AssetRule): Promise<void> =>
+        this.put(`transaction/rule/asset/${assetType}`, rule);
 
     private get(path: string): Promise<any> {
         return fetch(`${this.baseUrl}/${path}`).then(r => {

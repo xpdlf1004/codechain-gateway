@@ -5,6 +5,7 @@ import { AssetSchemeDoc } from "codechain-indexer-types/lib/types";
 
 import { Link } from "react-router-dom";
 import { ApiClient } from "../api-client";
+import { AssetRuleEditor } from "../components/AssetRuleEditor";
 
 interface Props {
   match: match<{ assetType: string }>;
@@ -32,12 +33,14 @@ export class AssetDetailPage extends React.Component<Props, States> {
 
   public render() {
     const { err } = this.state;
+    const { assetType } = this.props.match.params;
     if (err) {
       return <div>Error: {String(err)}</div>;
     }
     return (
       <div>
         {this.renderAssetScheme()}
+        <AssetRuleEditor assetType={assetType} />
         {this.renderAssetOwners()}
       </div>
     );
