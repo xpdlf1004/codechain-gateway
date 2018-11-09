@@ -4,7 +4,7 @@ import * as React from "react";
 import { TransferOutputInputGroupValue } from "../../common/types/transactions";
 import { ApiClient } from "../api-client";
 import { FeePayerSelect } from "../components/FeePayerSelect";
-import { TransferOutputInputGroup } from "../components/TransferOutputInputGroup";
+import { TransferOutputInput } from "../components/TransferOutputInput";
 import { InputGroupError } from "../input-group-error";
 
 interface Props {
@@ -56,7 +56,7 @@ export class AssetTransferPage extends React.Component<Props, States> {
         Asset Transfer <br />
         sender: {sender}
         <br />
-        <TransferOutputInputGroup
+        <TransferOutputInput
           assetType={assetType}
           onChange={this.handleTransferOutputInputGroupChange}
         />

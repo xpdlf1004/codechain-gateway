@@ -21,7 +21,7 @@ interface States {
   value: TransferOutputInputGroupValue;
 }
 
-export class TransferOutputInputGroup extends React.Component<Props, States> {
+export class TransferOutputInput extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
