@@ -33,7 +33,9 @@ export class MintTransactionInput extends React.Component<Props, States> {
         amount: "amount must be a positive integer"
       },
       data: {
-        recipient: "create",
+        recipient: {
+          type: "create"
+        },
         amount: 0,
         metadata: "",
         registrar: "none"

@@ -6,9 +6,15 @@ import {
 import { Transaction as CoreTransaction } from "codechain-sdk/lib/core/classes";
 
 export type RecipientSelectValue =
-    | "create"
-    | AssetTransferAddress
     | {
+          type: "create";
+      }
+    | {
+          type: "address";
+          address: AssetTransferAddress;
+      }
+    | {
+          type: "lock-script-hash";
           lockScriptHash: H160;
           parameters: Buffer[];
       };

@@ -27,7 +27,7 @@ export class TransferOutputInput extends React.Component<Props, States> {
     this.state = {
       errors: {},
       value: {
-        recipient: "create",
+        recipient: { type: "create" },
         amount: 1,
         assetType: props.assetType || ""
       }

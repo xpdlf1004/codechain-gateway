@@ -30,7 +30,9 @@ export class AssetTransferPage extends React.Component<Props, States> {
 
     this.state = {
       transferValue: {
-        recipient: "create",
+        recipient: {
+          type: "create"
+        },
         amount: 1,
         assetType
       },

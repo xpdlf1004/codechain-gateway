@@ -67,7 +67,10 @@ export class RecipientSelect extends React.Component<Props, States> {
       manualInputAddress: event.target.value
     });
     try {
-      this.emitChange(null, AssetTransferAddress.ensure(event.target.value));
+      this.emitChange(null, {
+        type: "address",
+        address: AssetTransferAddress.ensure(event.target.value)
+      });
     } catch (err) {
       this.emitChange(
         `"${event.target.value}" is not an asset transfer address`
@@ -83,6 +86,7 @@ export class RecipientSelect extends React.Component<Props, States> {
     });
     if (H160.check(event.target.value)) {
       this.emitChange(null, {
+        type: "lock-script-hash",
         lockScriptHash: H160.ensure(event.target.value),
         parameters: []
       });
@@ -103,13 +107,14 @@ export class RecipientSelect extends React.Component<Props, States> {
 
     switch (event.target.value) {
       case "create":
-        recipient = "create";
+        recipient = { type: "create" };
         break;
       case "manual":
         try {
-          recipient = AssetTransferAddress.ensure(
-            this.state.manualInputAddress
-          );
+          recipient = {
+            type: "address",
+            address: AssetTransferAddress.ensure(this.state.manualInputAddress)
+          };
         } catch (err) {
           return this.emitChange(
             `"${event.target.value}" is not an asset transfer address`
@@ -123,12 +128,16 @@ export class RecipientSelect extends React.Component<Props, States> {
           );
         }
         recipient = {
+          type: "lock-script-hash",
           lockScriptHash: H160.ensure(this.state.lockScriptHash),
           parameters: []
         };
         break;
       default:
-        recipient = AssetTransferAddress.fromString(event.target.value);
+        recipient = {
+          type: "address",
+          address: AssetTransferAddress.fromString(event.target.value)
+        };
         break;
     }
     this.emitChange(null, recipient);

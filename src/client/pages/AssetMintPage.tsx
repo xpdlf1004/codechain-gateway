@@ -21,7 +21,7 @@ export class AssetMintPage extends React.Component<{}, States> {
 
     this.state = {
       mintValue: {
-        recipient: "create",
+        recipient: { type: "create" },
         amount: 0,
         metadata: "",
         registrar: "none"

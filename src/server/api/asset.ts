@@ -15,28 +15,33 @@ export const createAssetApiRouter = (context: ServerContext) => {
 
     router.post("/mint", async (req, res) => {
         const { mintValue, feePayer } = req.body;
-        // FIXME: Check mintValue is MintTransactionInputGroupValue
+        // FIXME: Check mintValue is MintTransactionInputValue
         const {
             amount,
             metadata,
             registrar
         } = mintValue as MintTransactionInputValue;
-        let { recipient } = mintValue;
+        let { recipient } = mintValue as MintTransactionInputValue;
 
-        if (recipient !== "create" && "lockScriptHash" in recipient) {
+        if (recipient.type !== "create" && "lockScriptHash" in recipient) {
             // FIXME: not implemented
             return res.status(500).send();
         }
 
-        if (recipient === "create") {
+        if (recipient.type === "create") {
             const pubkeyhash = await context.cckey.asset.createKey({});
             const address = context.sdk.core.classes.AssetTransferAddress.fromTypeAndPayload(
                 1,
                 pubkeyhash
             );
-            recipient = address;
+            recipient = { type: "address", address };
         } else {
-            recipient = AssetTransferAddress.fromString(recipient.value);
+            recipient = {
+                type: "address",
+                address: AssetTransferAddress.fromString(
+                    recipient.address.value
+                )
+            };
         }
 
         const mintTx = context.sdk.core.createAssetMintTransaction({
@@ -47,7 +52,7 @@ export const createAssetApiRouter = (context: ServerContext) => {
                 amount,
                 registrar: registrar === "none" ? undefined : registrar
             },
-            recipient
+            recipient: recipient.address
         });
         const parcel = context.sdk.core.createAssetTransactionGroupParcel({
             transactions: [mintTx]
@@ -91,23 +96,31 @@ export const createAssetApiRouter = (context: ServerContext) => {
             sender: string;
         };
         // FIXME: Check the values are valid
-        const { amount, assetType } = transferValue;
-        let { recipient } = transferValue;
+        const {
+            amount,
+            assetType
+        } = transferValue as TransferOutputInputGroupValue;
+        let { recipient } = transferValue as TransferOutputInputGroupValue;
 
-        if (recipient !== "create" && "lockScriptHash" in recipient) {
+        if (recipient.type !== "create" && "lockScriptHash" in recipient) {
             // FIXME: not implemented
             return res.status(500).send();
         }
 
-        if (recipient === "create") {
+        if (recipient.type === "create") {
             const pubkeyhash = await context.cckey.asset.createKey({});
             const address = context.sdk.core.classes.AssetTransferAddress.fromTypeAndPayload(
                 1,
                 pubkeyhash
             );
-            recipient = address;
+            recipient = { type: "address", address };
         } else {
-            recipient = AssetTransferAddress.fromString(recipient.value);
+            recipient = {
+                type: "address",
+                address: AssetTransferAddress.fromString(
+                    recipient.address.value
+                )
+            };
         }
 
         const transferTx = context.sdk.core.createAssetTransferTransaction();
@@ -133,7 +146,7 @@ export const createAssetApiRouter = (context: ServerContext) => {
         transferTx.addOutputs({
             amount,
             assetType,
-            recipient
+            recipient: recipient.address
         });
         if (inputSum > amount) {
             transferTx.addOutputs({
