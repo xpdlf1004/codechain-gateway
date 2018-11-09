@@ -1,14 +1,14 @@
 import * as React from "react";
 
-import { MintTransactionInputGroupValue } from "../../common/types/transactions";
+import { MintTransactionInputValue } from "../../common/types/transactions";
 
 import { ApiClient } from "../api-client";
 import { FeePayerSelect } from "../components/FeePayerSelect";
-import { MintTransactionInputGroup } from "../components/MintTransactionInputGroup";
+import { MintTransactionInput } from "../components/MintTransactionInput";
 import { InputGroupError } from "../input-group-error";
 
 interface States {
-  mintValue: MintTransactionInputGroupValue;
+  mintValue: MintTransactionInputValue;
   feePayer: string;
   inputGroupError: InputGroupError;
   txError?: string;
@@ -38,7 +38,7 @@ export class AssetMintPage extends React.Component<{}, States> {
     }
     return (
       <div>
-        <MintTransactionInputGroup
+        <MintTransactionInput
           onChange={this.handleMintTransactionEditorChange}
         />
         <hr />
@@ -85,7 +85,7 @@ export class AssetMintPage extends React.Component<{}, States> {
 
   private handleMintTransactionEditorChange = (
     err: InputGroupError | null,
-    data: MintTransactionInputGroupValue
+    data: MintTransactionInputValue
   ) => {
     if (err !== null && Object.keys(err).length > 0) {
       this.setState({

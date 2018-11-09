@@ -1,6 +1,6 @@
 import { AssetRule } from "../common/types/rules";
 import {
-    MintTransactionInputGroupValue,
+    MintTransactionInputValue,
     Transaction,
     TransferOutputInputGroupValue
 } from "../common/types/transactions";
@@ -38,7 +38,7 @@ export class ApiClient {
         networkId: string;
     }> => this.get(`asset/${assetType}`);
     public mintAsset = (
-        mintValue: MintTransactionInputGroupValue,
+        mintValue: MintTransactionInputValue,
         feePayer: string
     ): Promise<string> => this.post("asset/mint", { feePayer, mintValue });
     public transferAsset = (

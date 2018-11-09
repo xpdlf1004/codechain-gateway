@@ -15,7 +15,7 @@ export type RecipientSelectValue =
 
 export type RegistrarSelectValue = PlatformAddress | "none";
 
-export interface MintTransactionInputGroupValue {
+export interface MintTransactionInputValue {
     recipient: RecipientSelectValue;
     amount: number;
     metadata: string;

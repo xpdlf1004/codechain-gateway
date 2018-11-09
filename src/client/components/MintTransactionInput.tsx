@@ -2,7 +2,7 @@ import update from "immutability-helper";
 import * as React from "react";
 
 import {
-  MintTransactionInputGroupValue,
+  MintTransactionInputValue,
   RecipientSelectValue,
   RegistrarSelectValue
 } from "../../common/types/transactions";
@@ -15,16 +15,16 @@ import { RegistrarSelect } from "./RegistrarSelect";
 interface Props {
   onChange?: (
     err: InputGroupError | null,
-    request?: MintTransactionInputGroupValue
+    request?: MintTransactionInputValue
   ) => void;
 }
 
 interface States {
   errors: InputGroupError;
-  data: MintTransactionInputGroupValue;
+  data: MintTransactionInputValue;
 }
 
-export class MintTransactionInputGroup extends React.Component<Props, States> {
+export class MintTransactionInput extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
 
@@ -169,7 +169,7 @@ export class MintTransactionInputGroup extends React.Component<Props, States> {
 
   private emitChange = (
     err: InputGroupError | null,
-    data?: MintTransactionInputGroupValue
+    data?: MintTransactionInputValue
   ) => {
     if (this.props.onChange) {
       this.props.onChange(err, data);

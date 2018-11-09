@@ -5,7 +5,7 @@ import { AssetTransferAddress } from "codechain-primitives/lib";
 import { SDK } from "codechain-sdk";
 import { Asset } from "codechain-sdk/lib/core/Asset";
 import {
-    MintTransactionInputGroupValue,
+    MintTransactionInputValue,
     TransferOutputInputGroupValue
 } from "../../common/types/transactions";
 import { ServerContext } from "../context";
@@ -20,7 +20,7 @@ export const createAssetApiRouter = (context: ServerContext) => {
             amount,
             metadata,
             registrar
-        } = mintValue as MintTransactionInputGroupValue;
+        } = mintValue as MintTransactionInputValue;
         let { recipient } = mintValue;
 
         if (recipient !== "create" && "lockScriptHash" in recipient) {
