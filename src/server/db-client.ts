@@ -5,7 +5,23 @@ import { Transaction as CoreTransaction } from "codechain-sdk/lib/core/classes";
 
 import { Transaction } from "../common/types/transactions";
 
-export class DatabaseLowdbClient {
+interface AssetDB {
+    getAssetList(): Promise<string[]>;
+    addAsset(assetType: string): Promise<void>;
+}
+
+interface TransactionDB {
+    getTransactions(): Promise<Transaction[]>;
+    addTransaction(tx: CoreTransaction, origin: string): Promise<void>;
+    updateTransactionStatus(txhash: string, status: string): Promise<void>;
+}
+
+interface AccountDB {
+    getFeePayer(): Promise<string | null>;
+    setFeePayer(address: string): Promise<void>;
+}
+
+export class DatabaseLowdbClient implements AssetDB, TransactionDB, AccountDB {
     public static async create(path: string) {
         const instance = new this(path);
         await instance.init();
@@ -68,7 +84,7 @@ export class DatabaseLowdbClient {
             throw Error(`DatabaseClient is not initialized`);
         }
         const updated = Date.now();
-        return this.db
+        this.db
             .get("txs")
             .find({ txhash })
             .assign({ status, updated })
