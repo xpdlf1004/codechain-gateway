@@ -61,43 +61,47 @@ export class RecipientSelect extends React.Component<Props, States> {
   }
 
   private handleManualAddressInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     this.setState({
-      manualInputAddress: e.target.value
+      manualInputAddress: event.target.value
     });
     try {
-      this.emitChange(null, AssetTransferAddress.ensure(e.target.value));
+      this.emitChange(null, AssetTransferAddress.ensure(event.target.value));
     } catch (err) {
-      this.emitChange(`"${e.target.value}" is not an asset transfer address`);
+      this.emitChange(
+        `"${event.target.value}" is not an asset transfer address`
+      );
     }
   };
 
   private handleLockScriptHashChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     this.setState({
-      lockScriptHash: e.target.value
+      lockScriptHash: event.target.value
     });
-    if (H160.check(e.target.value)) {
+    if (H160.check(event.target.value)) {
       this.emitChange(null, {
-        lockScriptHash: H160.ensure(e.target.value),
+        lockScriptHash: H160.ensure(event.target.value),
         parameters: []
       });
     } else {
-      this.emitChange(`"${e.target.value}" is not a lock script hash`);
+      this.emitChange(`"${event.target.value}" is not a lock script hash`);
     }
   };
 
-  private handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  private handleSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     // FIXME: Make sure that e.target.value is a correct usage.
     this.setState({
-      showLockScriptHashInput: e.target.value === "address",
-      showAddressInput: e.target.value === "manual"
+      showLockScriptHashInput: event.target.value === "address",
+      showAddressInput: event.target.value === "manual"
     });
     let recipient: RecipientSelectValue;
 
-    switch (e.target.value) {
+    switch (event.target.value) {
       case "create":
         recipient = "create";
         break;
@@ -108,7 +112,7 @@ export class RecipientSelect extends React.Component<Props, States> {
           );
         } catch (err) {
           return this.emitChange(
-            `"${e.target.value}" is not an asset transfer address`
+            `"${event.target.value}" is not an asset transfer address`
           );
         }
         break;
@@ -124,7 +128,7 @@ export class RecipientSelect extends React.Component<Props, States> {
         };
         break;
       default:
-        recipient = AssetTransferAddress.fromString(e.target.value);
+        recipient = AssetTransferAddress.fromString(event.target.value);
         break;
     }
     this.emitChange(null, recipient);
