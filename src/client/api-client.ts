@@ -78,23 +78,24 @@ export class ApiClient {
     }
 
     private post(path: string, body?: any): Promise<any> {
-        const init =
-            body instanceof FormData
-                ? {
-                      method: "POST",
-                      body
-                  }
-                : {
-                      method: "POST",
-                      headers: {
-                          "Content-Type": "application/json"
-                      },
-                      body:
-                          body === undefined ? undefined : JSON.stringify(body)
-                  };
-        return fetch(`${this.baseUrl}/${path}`, init).then(r => {
+        return fetch(
+            `${this.baseUrl}/${path}`,
+            this.createRequestInit("POST", body)
+        ).then(r => {
             if (r.status >= 400) {
                 return Promise.reject(Error(`POST ${path}: ${r.statusText}`));
+            }
+            return r.json();
+        });
+    }
+
+    private put(path: string, body?: any): Promise<any> {
+        return fetch(
+            `${this.baseUrl}/${path}`,
+            this.createRequestInit("PUT", body)
+        ).then(r => {
+            if (r.status >= 400) {
+                return Promise.reject(Error(`PUT ${path}: ${r.statusText}`));
             }
             return r.json();
         });
@@ -111,5 +112,23 @@ export class ApiClient {
                 return Promise.resolve(r);
             }
         );
+    }
+
+    private createRequestInit(
+        method: "POST" | "PUT" | "DELETE",
+        body: any
+    ): RequestInit {
+        return body instanceof FormData
+            ? {
+                  method,
+                  body
+              }
+            : {
+                  method,
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: body === undefined ? undefined : JSON.stringify(body)
+              };
     }
 }
