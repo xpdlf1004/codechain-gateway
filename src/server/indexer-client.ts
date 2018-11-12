@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 
 import {
+    AssetSchemeDoc,
     PendingTransactionDoc,
     TransactionDoc,
     UTXO
@@ -25,7 +26,7 @@ export class IndexerClient {
         }
     }
 
-    public getAssetInfo(type: string): Promise<any> {
+    public getAssetInfo(type: string): Promise<AssetSchemeDoc> {
         return this.call(`asset/0x${type}`);
     }
 
