@@ -76,7 +76,9 @@ export const createAssetApiRouter = (context: ServerContext) => {
                     context.db.addAsset(
                         mintTx.getMintedAsset().assetType.value
                     ),
-                    context.db.addTransaction(mintTx, "admin")
+                    context.db.addTransaction(mintTx, "admin", {
+                        type: "pending"
+                    })
                 ])
             )
             .then(([hash]) => {
@@ -174,7 +176,12 @@ export const createAssetApiRouter = (context: ServerContext) => {
             .then(signedParcel =>
                 context.sdk.rpc.chain.sendSignedParcel(signedParcel)
             )
-            .then(hash => res.status(200).json(hash.value))
+            .then(async hash => {
+                await context.db.addTransaction(transferTx, "admin", {
+                    type: "pending"
+                });
+                return res.status(200).json(hash.value);
+            })
             .catch(err => {
                 console.error(err);
                 res.status(500).send();

@@ -34,11 +34,34 @@ export interface TransferOutputInputGroupValue {
     assetType: string;
 }
 
+export type TransactionStatus =
+    | {
+          type: "pending";
+      }
+    | {
+          type: "rejected";
+          reason: string;
+      }
+    | {
+          type: "errored";
+          reason: string;
+      }
+    | {
+          type: "dropped";
+      }
+    | {
+          type: "failed";
+          reason: string;
+      }
+    | {
+          type: "successful";
+      };
+
 export interface Transaction {
     txhash: string;
     tx: CoreTransaction;
     created: number;
     updated?: number | null;
     origin: string;
-    status: string;
+    status: TransactionStatus;
 }

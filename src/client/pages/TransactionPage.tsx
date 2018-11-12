@@ -45,7 +45,11 @@ export class TransactionPage extends React.Component<{}, States> {
                 <td>{new Date(tx.created).toLocaleString()}</td>
                 <td>{tx.tx.type.replace(/^asset/, "")}</td>
                 <td>{tx.origin}</td>
-                <td>{tx.status}</td>
+                <td
+                  title={"reason" in tx.status ? tx.status.reason : undefined}
+                >
+                  {tx.status.type}
+                </td>
                 <td title={tx.txhash}>
                   0x
                   {tx.txhash.substr(0, 6)}

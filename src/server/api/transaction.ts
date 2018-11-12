@@ -12,6 +12,12 @@ export const createTransactionApiRouter = (context: ServerContext) => {
         let tx: AssetTransferTransaction;
         try {
             tx = AssetTransferTransaction.fromJSON(req.body.tx);
+        } catch (err) {
+            console.error(err);
+            return res.status(400).send();
+        }
+
+        try {
             const assetTypes = _.uniq([
                 ...tx.burns.map(b => b.prevOut.assetType.value),
                 ...tx.inputs.map(i => i.prevOut.assetType.value),
@@ -34,8 +40,11 @@ export const createTransactionApiRouter = (context: ServerContext) => {
                 resolve();
             });
         } catch (err) {
-            // FIXME: Bad request if tx is bad
             console.error(err);
+            await context.db.addTransaction(tx, "api", {
+                type: "rejected",
+                reason: String(err)
+            });
             return res.status(401).send();
         }
         try {
@@ -55,10 +64,15 @@ export const createTransactionApiRouter = (context: ServerContext) => {
                 nonce
             });
             await context.sdk.rpc.chain.sendSignedParcel(signedParcel);
-            await context.db.addTransaction(tx, "api");
+            await context.db.addTransaction(tx, "api", { type: "pending" });
             // FIXME: Use a valid protocal format
             return res.json("success");
-        } catch (e) {
+        } catch (err) {
+            console.error(err);
+            await context.db.addTransaction(tx, "api", {
+                type: "errored",
+                reason: String(err)
+            });
             return res.status(500).send();
         }
     });

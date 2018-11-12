@@ -4,7 +4,7 @@ import * as FileAsync from "lowdb/adapters/FileAsync";
 import { Transaction as CoreTransaction } from "codechain-sdk/lib/core/classes";
 
 import { AssetRule } from "../common/types/rules";
-import { Transaction } from "../common/types/transactions";
+import { Transaction, TransactionStatus } from "../common/types/transactions";
 
 interface AssetDB {
     getAssetList(): Promise<string[]>;
@@ -13,7 +13,11 @@ interface AssetDB {
 
 interface TransactionDB {
     getTransactions(): Promise<Transaction[]>;
-    addTransaction(tx: CoreTransaction, origin: string): Promise<void>;
+    addTransaction(
+        tx: CoreTransaction,
+        origin: string,
+        status: TransactionStatus
+    ): Promise<void>;
     updateTransactionStatus(txhash: string, status: string): Promise<void>;
 }
 
@@ -76,13 +80,16 @@ export class DatabaseLowdbClient
             .write();
     }
 
-    public async addTransaction(tx: CoreTransaction, origin: string) {
+    public async addTransaction(
+        tx: CoreTransaction,
+        origin: string,
+        status: TransactionStatus
+    ) {
         if (!this.db) {
             throw Error(`DatabaseClient is not initialized`);
         }
         const txhash = tx.hash().value;
         const created = Date.now();
-        const status = "processing";
         return this.db
             .get("txs")
             .push({
