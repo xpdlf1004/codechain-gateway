@@ -1,4 +1,4 @@
-import { Asset, AssetScheme } from "../common/types/asset";
+import { Asset, AssetDetail } from "../common/types/asset";
 import { AssetRule } from "../common/types/rules";
 import {
     MintTransactionInputValue,
@@ -30,7 +30,7 @@ export class ApiClient {
 
     // Asset
     public getAssetList = (): Promise<Asset[]> => this.get("asset/list");
-    public getAssetDetail = (assetType: string): Promise<AssetScheme> =>
+    public getAssetDetail = (assetType: string): Promise<AssetDetail> =>
         this.get(`asset/${assetType}`);
     public mintAsset = (
         mintValue: MintTransactionInputValue,

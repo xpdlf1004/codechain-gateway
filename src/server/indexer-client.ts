@@ -26,7 +26,7 @@ export class IndexerClient {
         }
     }
 
-    public getAssetInfo(type: string): Promise<AssetSchemeDoc> {
+    public getAssetScheme(type: string): Promise<AssetSchemeDoc | null> {
         return this.call(`asset/0x${type}`);
     }
 

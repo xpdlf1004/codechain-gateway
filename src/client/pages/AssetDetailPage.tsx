@@ -1,9 +1,8 @@
 import * as React from "react";
 import { match } from "react-router";
 
-import { AssetSchemeDoc } from "codechain-indexer-types/lib/types";
-
 import { Link } from "react-router-dom";
+import { AssetDetail } from "../../common/types/asset";
 import { ApiClient } from "../api-client";
 import { AssetRuleEditor } from "../components/AssetRuleEditor";
 
@@ -12,7 +11,7 @@ interface Props {
 }
 
 interface States {
-  scheme?: AssetSchemeDoc;
+  item?: AssetDetail;
   owners?: {
     [address: string]: number;
   };
@@ -28,40 +27,53 @@ export class AssetDetailPage extends React.Component<Props, States> {
   public componentDidMount() {
     const { assetType } = this.props.match.params;
     this.loadAssetDetail(assetType);
-    this.loadAssetOwners(assetType);
   }
 
   public render() {
     const { err } = this.state;
-    const { assetType } = this.props.match.params;
     if (err) {
       return <div>Error: {String(err)}</div>;
     }
-    return (
-      <div>
-        {this.renderAssetScheme()}
-        <AssetRuleEditor assetType={assetType} />
-        {this.renderAssetOwners()}
-      </div>
-    );
+    return <div>{this.renderAssetDetail()}</div>;
   }
 
-  private renderAssetScheme() {
-    const { assetType } = this.props.match.params;
-    const { scheme } = this.state;
-    if (!scheme) {
+  private renderAssetDetail() {
+    const { item } = this.state;
+    if (!item) {
       return <div>Loading ... </div>;
     }
-    const { metadata, registrar, amount } = scheme;
+    const { type, name, mintTxHash } = item;
     return (
       <div>
-        Asset: {assetType}
+        <h3>Asset Name: {name}</h3>
+        AssetType: {type}
         <br />
-        metadata: {metadata}
+        <AssetRuleEditor assetType={type} />
         <br />
-        registrar: {registrar}
-        <br />
-        Total supply: {amount}
+        {item.scheme ? (
+          <>
+            <br />
+            metadata:
+            <input type="text" value={item.scheme.metadata} disabled />
+            <br />
+            registrar:
+            <input type="text" value={item.scheme.registrar || ""} disabled />
+            <br />
+            Total supply: {item.scheme.amount}
+            <br />
+            {this.renderAssetOwners()}
+          </>
+        ) : (
+          <>
+            MintTransaction is not confirmed yet:{" "}
+            <a
+              href={`https://husky.codechain.io/explorer/tx/${mintTxHash}`}
+              target="_blank"
+            >
+              Go to explorer
+            </a>
+          </>
+        )}
       </div>
     );
   }
@@ -96,11 +108,12 @@ export class AssetDetailPage extends React.Component<Props, States> {
   private loadAssetDetail(assetType: string) {
     new ApiClient()
       .getAssetDetail(assetType)
-      .then(assetScheme => {
+      .then(detail => {
         this.setState({
-          scheme: assetScheme,
+          item: detail,
           err: undefined
         });
+        this.loadAssetOwners(assetType);
       })
       .catch(e => {
         this.setState({

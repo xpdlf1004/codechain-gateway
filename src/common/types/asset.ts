@@ -4,9 +4,14 @@ export interface Asset {
     mintTxHash: string;
 }
 
-export interface AssetScheme {
-    metadata: string;
-    registrar: string | null;
-    amount: number | null;
-    networkId: string;
+export interface AssetDetail {
+    type: string;
+    name: string;
+    mintTxHash: string;
+    scheme?: {
+        metadata: string;
+        registrar: string | null;
+        amount: number | null;
+        networkId: string;
+    };
 }

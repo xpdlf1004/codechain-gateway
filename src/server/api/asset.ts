@@ -205,12 +205,18 @@ export const createAssetApiRouter = (context: ServerContext) => {
 
     router.get("/:type", async (req, res) => {
         const { type } = req.params;
-        context.indexer
-            .getAssetInfo(type)
-            .then(assetScheme => {
-                res.status(200).json(assetScheme);
+        Promise.all([
+            context.db.getAsset(type),
+            context.indexer.getAssetScheme(type)
+        ])
+            .then(([asset, schemeDoc]) => {
+                if (asset == null) {
+                    return res.status(404).json(null);
+                }
+                return res.status(200).json({ ...asset, scheme: schemeDoc });
             })
-            .catch(() => {
+            .catch(err => {
+                console.error(err);
                 res.status(500).send();
             });
     });
