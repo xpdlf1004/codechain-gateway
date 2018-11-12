@@ -3,12 +3,13 @@ import * as FileAsync from "lowdb/adapters/FileAsync";
 
 import { Transaction as CoreTransaction } from "codechain-sdk/lib/core/classes";
 
+import { Asset } from "../common/types/asset";
 import { AssetRule } from "../common/types/rules";
 import { Transaction, TransactionStatus } from "../common/types/transactions";
 
 interface AssetDB {
-    getAssetList(): Promise<string[]>;
-    addAsset(assetType: string): Promise<void>;
+    getAssetList(): Promise<Asset[]>;
+    addAsset(asset: Asset): Promise<void>;
 }
 
 interface TransactionDB {
@@ -73,13 +74,13 @@ export class DatabaseLowdbClient
         return Promise.resolve(assets);
     }
 
-    public async addAsset(assetType: string) {
+    public async addAsset(asset: Asset) {
         if (!this.db) {
             throw Error(`DatabaseClient is not initialized`);
         }
         return this.db
             .get("assets")
-            .push(assetType)
+            .push(asset)
             .write();
     }
 

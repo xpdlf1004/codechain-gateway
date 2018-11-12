@@ -1,3 +1,4 @@
+import { Asset, AssetScheme } from "../common/types/asset";
 import { AssetRule } from "../common/types/rules";
 import {
     MintTransactionInputValue,
@@ -28,15 +29,9 @@ export class ApiClient {
         this.post(`account/fee-payer`, { address });
 
     // Asset
-    public getAssetList = (): Promise<string[]> => this.get("asset/list");
-    public getAssetDetail = (
-        assetType: string
-    ): Promise<{
-        metadata: any;
-        registrar: any;
-        amount: any;
-        networkId: string;
-    }> => this.get(`asset/${assetType}`);
+    public getAssetList = (): Promise<Asset[]> => this.get("asset/list");
+    public getAssetDetail = (assetType: string): Promise<AssetScheme> =>
+        this.get(`asset/${assetType}`);
     public mintAsset = (
         mintValue: MintTransactionInputValue,
         feePayer: string
