@@ -34,8 +34,9 @@ export const createTransactionApiRouter = (context: ServerContext) => {
                 resolve();
             });
         } catch (err) {
+            // FIXME: Bad request if tx is bad
             console.error(err);
-            return res.status(400).send();
+            return res.status(401).send();
         }
         try {
             const keyStore = await context.sdk.key.createLocalKeyStore();
