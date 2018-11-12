@@ -1,4 +1,8 @@
-export type Asset = string;
+export interface Asset {
+    type: string;
+    name: string;
+    mintTxHash: string;
+}
 
 export interface AssetScheme {
     metadata: string;

@@ -70,17 +70,28 @@ export const createAssetApiRouter = (context: ServerContext) => {
             .then(signedParcel =>
                 context.sdk.rpc.chain.sendSignedParcel(signedParcel)
             )
-            .then(hash =>
-                Promise.all([
+            .then(hash => {
+                const assetScheme = mintTx.getAssetScheme();
+                const defaultName = `Asset${Math.floor(Math.random() * 9999) +
+                    1}`;
+                let name: string;
+                try {
+                    name = JSON.parse(assetScheme.metadata).name || defaultName;
+                } catch (_) {
+                    name = defaultName;
+                }
+                return Promise.all([
                     hash,
-                    context.db.addAsset(
-                        mintTx.getMintedAsset().assetType.value
-                    ),
+                    context.db.addAsset({
+                        type: mintTx.getMintedAsset().assetType.value,
+                        name,
+                        mintTxHash: mintTx.hash().value
+                    }),
                     context.db.addTransaction(mintTx, "admin", {
                         type: "pending"
                     })
-                ])
-            )
+                ]);
+            })
             .then(([hash]) => {
                 res.status(200).json(hash.value);
             })

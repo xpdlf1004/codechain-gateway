@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
+import { Asset } from "../../common/types/asset";
 import { ApiClient } from "../api-client";
 
 interface States {
-  assets?: string[];
+  assets?: Asset[];
   err?: string;
 }
 
@@ -36,8 +37,8 @@ export class AssetListPage extends React.Component<{}, States> {
 
         <span>Total {assets.length} assets</span>
         {assets.map(a => (
-          <div key={a}>
-            <Link to={`asset/${a}`}>{a}</Link>
+          <div key={a.type}>
+            <Link to={`asset/${a.type}`}>{a.name}</Link>
           </div>
         ))}
       </div>

@@ -66,7 +66,7 @@ export class DatabaseLowdbClient
             .write();
     }
 
-    public async getAssetList(): Promise<string[]> {
+    public async getAssetList(): Promise<Asset[]> {
         if (!this.db) {
             throw Error(`DatabaseClient is not initialized`);
         }
@@ -173,7 +173,7 @@ export class DatabaseLowdbClient
     private async isAssetExist(assetType: string): Promise<boolean> {
         return (
             (await this.getAssetList()).findIndex(
-                value => value === assetType
+                value => value.type === assetType
             ) !== -1
         );
     }
