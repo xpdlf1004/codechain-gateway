@@ -1,6 +1,10 @@
 import fetch from "node-fetch";
 
-import { UTXO } from "codechain-indexer-types/lib/types";
+import {
+    PendingTransactionDoc,
+    TransactionDoc,
+    UTXO
+} from "codechain-indexer-types/lib/types";
 
 export class IndexerClient {
     private baseUrl: string;
@@ -23,6 +27,16 @@ export class IndexerClient {
 
     public getAssetInfo(type: string): Promise<any> {
         return this.call(`asset/0x${type}`);
+    }
+
+    public getTransaction(hash: string): Promise<TransactionDoc | null> {
+        return this.call(`tx/${hash}`);
+    }
+
+    public getPendingTransaction(
+        hash: string
+    ): Promise<PendingTransactionDoc | null> {
+        return this.call(`tx/pending/${hash}`);
     }
 
     public getUTXOs(type: string, address?: string): Promise<UTXO[]> {
