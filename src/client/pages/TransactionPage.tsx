@@ -35,7 +35,7 @@ export class TransactionPage extends React.Component<{}, States> {
               <th>Created</th>
               <th>Type</th>
               <th>Origin</th>
-              <th>Status (not implemented)</th>
+              <th>Status</th>
               <th>TxHash</th>
             </tr>
           </thead>

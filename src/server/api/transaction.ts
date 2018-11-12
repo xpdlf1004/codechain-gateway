@@ -107,13 +107,53 @@ export const createTransactionApiRouter = (context: ServerContext) => {
             });
     });
 
-    router.get("/list", async (_, res) => {
-        context.db
-            .getTransactions()
-            .then(transactions => {
-                res.status(200).json({ transactions });
-            })
-            .catch(() => res.status(500).send());
+    router.get("/list", async (req, res) => {
+        try {
+            let txs = await context.db.getTransactions();
+
+            txs = await Promise.all(
+                txs.map(async tx => {
+                    const { txhash, status, created } = tx;
+                    if (
+                        status.type !== "pending" ||
+                        // NOTE: Wait indexer to index
+                        Date.now() - created < 7000
+                    ) {
+                        return tx;
+                    }
+                    const pendingTxDoc = await context.indexer.getPendingTransaction(
+                        txhash
+                    );
+                    console.log(`pendingTxDoc ${pendingTxDoc}`);
+                    if (pendingTxDoc) {
+                        console.log(`${txhash}: still pending`);
+                        return tx;
+                    }
+                    const txDoc = await context.indexer.getTransaction(txhash);
+                    console.log(`txDoc ${txDoc}`);
+                    if (txDoc) {
+                        console.log(`${txhash}: invoice ${txDoc.data.invoice}`);
+                        return context.db.updateTransactionStatus(
+                            txhash,
+                            txDoc.data.invoice
+                                ? { type: "successful" }
+                                : {
+                                      type: "failed",
+                                      reason:
+                                          "Currently, invoices don't provide reason"
+                                  }
+                        );
+                    }
+                    return context.db.updateTransactionStatus(txhash, {
+                        type: "dropped"
+                    });
+                })
+            );
+            res.status(200).json({ transactions: txs });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send();
+        }
     });
 
     return router;

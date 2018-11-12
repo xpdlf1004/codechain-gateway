@@ -18,7 +18,10 @@ interface TransactionDB {
         origin: string,
         status: TransactionStatus
     ): Promise<void>;
-    updateTransactionStatus(txhash: string, status: string): Promise<void>;
+    updateTransactionStatus(
+        txhash: string,
+        status: TransactionStatus
+    ): Promise<Transaction>;
 }
 
 interface AccountDB {
@@ -102,16 +105,19 @@ export class DatabaseLowdbClient
             .write();
     }
 
-    public async updateTransactionStatus(txhash: string, status: string) {
+    public async updateTransactionStatus(
+        txhash: string,
+        status: TransactionStatus
+    ): Promise<Transaction> {
         if (!this.db) {
             throw Error(`DatabaseClient is not initialized`);
         }
         const updated = Date.now();
-        this.db
+        return this.db
             .get("txs")
             .find({ txhash })
             .assign({ status, updated })
-            .write();
+            .write() as Promise<Transaction>;
     }
 
     public async getTransactions(): Promise<Transaction[]> {
