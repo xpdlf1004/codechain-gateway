@@ -1,9 +1,9 @@
 import * as React from "react";
 import { match } from "react-router";
 
-import { Link } from "react-router-dom";
 import { AssetDetail } from "../../common/types/asset";
 import { ApiClient } from "../api-client";
+import { AssetBalance } from "../components/AssetBalance";
 import { AssetRuleEditor } from "../components/AssetRuleEditor";
 
 interface Props {
@@ -91,14 +91,12 @@ export class AssetDetailPage extends React.Component<Props, States> {
         <span>Total {Object.keys(owners).length} owners</span>
         {Object.keys(owners).map(address => (
           <div key={address}>
-            <span>{address}</span>
-            <span> ... </span>
-            <span>{owners[address]}</span>
-            <span>
-              <Link to={`transfer?assetType=${assetType}&sender=${address}`}>
-                <button>transfer</button>
-              </Link>
-            </span>
+            <AssetBalance
+              assetType={assetType}
+              ownerAddress={address}
+              balance={owners[address]}
+              transferable={/* FIXME */ true}
+            />
           </div>
         ))}
       </div>
