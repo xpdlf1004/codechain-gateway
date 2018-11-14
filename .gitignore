@@ -4,3 +4,7 @@ public/imgs
 
 db.json
 keystore.db
+
+src/client/**/*.css
+
+build/

@@ -50,6 +50,7 @@ module.exports = {
   yarnLockFile: resolveApp("yarn.lock"),
   appNodeModules: resolveApp("node_modules"),
   appTsConfig: resolveApp("tsconfig.client.json"),
+  appTsProdConfig: resolveApp("tsconfig.client.json"),
   appTsLint: resolveApp("tslint.json"),
   publicUrl: getPublicUrl(resolveApp("package.json")),
   servedPath: getServedPath(resolveApp("package.json"))
