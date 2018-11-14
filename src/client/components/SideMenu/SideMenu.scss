@@ -1,4 +1,5 @@
 @import "styles/variables.scss";
+@import "styles/mixin.scss";
 
 .side-menu {
   width: 300px;
@@ -11,6 +12,7 @@
     width: 100%;
     border-bottom: 1px solid $line-color;
     padding-left: 30px;
+    @include heading-font();
 
     &:hover {
       background-color: $sidemenu-item-hover-bg-color;

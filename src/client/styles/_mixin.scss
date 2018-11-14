@@ -1,0 +1,7 @@
+@mixin heading-font() {
+  font-weight: 700;
+}
+
+@mixin data-font() {
+  font-family: "Roboto Mono", monospace;
+}

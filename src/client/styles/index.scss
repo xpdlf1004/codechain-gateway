@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Roboto+Mono|Roboto:400,700,900");
 @import "styles/variables.scss";
+@import "styles/typography.scss";
 
 body {
   color: $dark-text-color;
+  font-family: "Montserrat", sans-serif;
 }
 
 a {
