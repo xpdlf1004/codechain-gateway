@@ -1,3 +1,4 @@
+import { PendingTransactionDoc } from "codechain-indexer-types/lib/types";
 import { Asset, AssetDetail } from "../common/types/asset";
 import { AssetRule } from "../common/types/rules";
 import {
@@ -57,6 +58,10 @@ export class ApiClient {
     // Transaction
     public getTransactionList = (): Promise<{ transactions: Transaction[] }> =>
         this.get(`transaction/list`);
+    public getPendingTransactionList = (
+        address: string
+    ): Promise<{ transactions: PendingTransactionDoc[] }> =>
+        this.get(`transaction/pending/list/asset-address/${address}`);
 
     public uploadImage = (image: File): Promise<{ url: string }> => {
         const formData = new FormData();

@@ -35,9 +35,15 @@ export class IndexerClient {
     }
 
     public getPendingTransaction(
-        hash: string
+        txhash: string
     ): Promise<PendingTransactionDoc | null> {
-        return this.call(`tx/pending/${hash}`);
+        return this.call(`tx/pending/${txhash}`);
+    }
+
+    public getAssetTransferAddressRelatedPendingTransactions(
+        assetTransferAddress: string
+    ): Promise<PendingTransactionDoc[]> {
+        return this.call(`addr-asset-txs/pending/${assetTransferAddress}`);
     }
 
     public getUTXOs(type: string, address?: string): Promise<UTXO[]> {

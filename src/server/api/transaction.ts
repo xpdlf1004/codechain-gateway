@@ -156,5 +156,18 @@ export const createTransactionApiRouter = (context: ServerContext) => {
         }
     });
 
+    router.get("/pending/list/asset-address/:address", async (req, res) => {
+        const { address } = req.params;
+        context.indexer
+            .getAssetTransferAddressRelatedPendingTransactions(address)
+            .then(pendings => {
+                res.status(200).send({ transactions: pendings });
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send();
+            });
+    });
+
     return router;
 };
