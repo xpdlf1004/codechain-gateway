@@ -1,0 +1,13 @@
+@import "styles/variables.scss";
+
+body {
+  color: $dark-text-color;
+}
+
+a {
+  color: $dark-text-color;
+  &:hover {
+    color: darken($dark-text-color, 100%);
+    text-decoration: none;
+  }
+}

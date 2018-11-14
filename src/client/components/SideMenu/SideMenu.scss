@@ -1,0 +1,19 @@
+@import "styles/variables.scss";
+
+.side-menu {
+  width: 300px;
+  height: calc(100vh - #{$header-height});
+  background-color: $sidemenu-main-bg-color;
+  border-right: 1px solid $line-color;
+
+  .menu-item {
+    height: 63px;
+    width: 100%;
+    border-bottom: 1px solid $line-color;
+    padding-left: 30px;
+
+    &:hover {
+      background-color: $sidemenu-item-hover-bg-color;
+    }
+  }
+}

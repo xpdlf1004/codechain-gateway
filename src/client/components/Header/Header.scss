@@ -1,6 +1,30 @@
+@import "styles/variables.scss";
+
 .header {
-  .logo {
-    width: 30px;
-    height: 30px;
+  height: $header-height;
+  .title-container {
+    width: 300px;
+    height: 100%;
+    background-color: $header-title-bg-color;
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+    .title {
+      color: white;
+    }
+  }
+  .menu-container {
+    flex: 1;
+    background-color: $header-main-bg-color;
+    color: $header-menu-text-color;
+    padding-right: 40px;
+    padding-left: 40px;
+    .menu-item {
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
