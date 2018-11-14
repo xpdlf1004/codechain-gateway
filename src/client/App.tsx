@@ -22,7 +22,7 @@ export const App = () => (
         <Header />
         <div className="d-flex">
           <SideMenu />
-          <div className="flex-grow-1 flex-shrink-1">
+          <div className="flex-grow-1 flex-shrink-1 content-container">
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/account" component={AccountPage} />
