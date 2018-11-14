@@ -2,6 +2,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 
+import Header from "./components/Header/Header";
 import { AccountDetailPage } from "./pages/AccountDetailPage";
 import { AccountPage } from "./pages/AccountPage";
 import { AssetAddressPage } from "./pages/AssetAddressPage";
@@ -17,6 +18,7 @@ export const App = () => (
   <Provider store={store}>
     <Router>
       <div>
+        <Header />
         <Link to="/">Home</Link>
         <br />
         <Link to="/account">Account</Link>
