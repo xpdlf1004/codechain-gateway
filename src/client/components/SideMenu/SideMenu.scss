@@ -15,5 +15,9 @@
     &:hover {
       background-color: $sidemenu-item-hover-bg-color;
     }
+
+    .icon {
+      color: lighten($dark-text-color, 30%);
+    }
   }
 }

@@ -1,3 +1,11 @@
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faAddressBook,
+  faGift,
+  faHome,
+  faList,
+  faUser
+} from "@fortawesome/free-solid-svg-icons";
 import * as React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -14,6 +22,8 @@ import { AssetTransferPage } from "./pages/AssetTransferPage";
 import { HomePage } from "./pages/HomePage";
 import { TransactionPage } from "./pages/TransactionPage";
 import { store } from "./store";
+
+library.add(faHome, faUser, faGift, faAddressBook, faList);
 
 export const App = () => (
   <Provider store={store}>
