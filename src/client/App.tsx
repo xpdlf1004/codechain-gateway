@@ -64,4 +64,4 @@ export const App = () => (
   </Provider>
 );
 
-const NotFound = () => <h1>Page not found</h1>;
+const NotFound = () => <h3>Page not found</h3>;

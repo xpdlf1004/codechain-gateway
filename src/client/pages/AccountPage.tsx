@@ -27,14 +27,14 @@ export class AccountPage extends React.Component<{}, States> {
   public render() {
     const { accounts, err, feePayer } = this.state;
     if (err) {
-      return <h1>Account Page errored: {err}</h1>;
+      return <h3>Account Page errored: {err}</h3>;
     }
     if (accounts === null) {
-      return <h1>loading</h1>;
+      return <h3>loading</h3>;
     }
     return (
       <div>
-        <h1>Account Page</h1>
+        <h3>Account Page</h3>
         <br />
         Total {accounts.length} accounts
         <br />
