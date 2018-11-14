@@ -25,13 +25,21 @@ export class TransferOutputInput extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      errors: {},
+      errors: {
+        amount: "amount must be a positive integer"
+      },
       value: {
         recipient: { type: "create" },
-        amount: 1,
+        amount: 0,
         assetType: props.assetType || ""
       }
     };
+  }
+
+  public componentDidMount() {
+    if (Object.keys(this.state.errors)) {
+      this.emitChange(this.state.errors);
+    }
   }
 
   public render() {
@@ -44,7 +52,7 @@ export class TransferOutputInput extends React.Component<Props, States> {
         </div>
         <div>
           <div>
-            Amount <input onChange={this.handleAmountChange} />{" "}
+            Amount <input onChange={this.handleAmountChange} defaultValue="0" />{" "}
           </div>
         </div>
         <div>
