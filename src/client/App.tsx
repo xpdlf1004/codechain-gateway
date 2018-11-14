@@ -4,6 +4,7 @@ import {
   faGift,
   faHome,
   faList,
+  faTrash,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import * as React from "react";
@@ -13,7 +14,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./components/Header/Header";
 import SideMenu from "./components/SideMenu/SideMenu";
 import { AccountDetailPage } from "./pages/AccountDetailPage";
-import { AccountPage } from "./pages/AccountPage";
+import { AccountPage } from "./pages/AccountPage/AccountPage";
 import { AssetAddressPage } from "./pages/AssetAddressPage";
 import { AssetDetailPage } from "./pages/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
@@ -23,7 +24,7 @@ import { HomePage } from "./pages/HomePage";
 import { TransactionPage } from "./pages/TransactionPage";
 import { store } from "./store";
 
-library.add(faHome, faUser, faGift, faAddressBook, faList);
+library.add(faHome, faUser, faGift, faAddressBook, faList, faTrash);
 
 export const App = () => (
   <Provider store={store}>

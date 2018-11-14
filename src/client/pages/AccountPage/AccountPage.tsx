@@ -1,7 +1,10 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { ApiClient } from "../api-client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ApiClient } from "../../api-client";
+
+import "./AccountPage.css";
 
 interface States {
   feePayer?: string | null;
@@ -33,7 +36,7 @@ export class AccountPage extends React.Component<{}, States> {
       return <h3>loading</h3>;
     }
     return (
-      <div>
+      <div className="account-page">
         <h3>Account Page</h3>
         <br />
         Total {accounts.length} accounts
@@ -47,14 +50,26 @@ export class AccountPage extends React.Component<{}, States> {
                 onChange={e =>
                   this.handleFeePayerCheckClick(a, e.target.checked)
                 }
+                className="mr-2"
               />
               <Link to={`account/${a}`}>{a}</Link>
-              <button onClick={() => this.handleRemoveClick(a)}>x</button>
+              <div
+                className="ml-2 d-inline-block remove-btn"
+                onClick={() => this.handleRemoveClick(a)}
+              >
+                <FontAwesomeIcon icon="trash" />
+              </div>
             </p>
           </div>
         ))}
         {accounts.length < 20 && (
-          <button onClick={this.handleAddClick}>Generate</button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={this.handleAddClick}
+          >
+            Generate
+          </button>
         )}
       </div>
     );

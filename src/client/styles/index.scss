@@ -18,3 +18,19 @@ a {
 .content-container {
   padding: 50px;
 }
+
+.btn {
+  border-radius: 1px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  border: 0px;
+
+  &:hover {
+    background-color: darken($primary-color, 15%);
+  }
+}
