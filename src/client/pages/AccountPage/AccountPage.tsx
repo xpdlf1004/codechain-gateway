@@ -37,7 +37,7 @@ export class AccountPage extends React.Component<{}, States> {
     }
     return (
       <div className="account-page">
-        <h3>Account Page</h3>
+        <h3>Account</h3>
         <br />
         Total {accounts.length} accounts
         <br />
@@ -59,7 +59,7 @@ export class AccountPage extends React.Component<{}, States> {
                 className="ml-2 d-inline-block remove-btn"
                 onClick={() => this.handleRemoveClick(a)}
               >
-                <FontAwesomeIcon icon="trash" />
+                <FontAwesomeIcon icon={["far", "trash-alt"]} />
               </div>
             </p>
           </div>

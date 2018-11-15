@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import "./FeePayerSelect.css";
+
 interface Props {
   addresses: string[];
   onChange?: (err: string | null, address: string) => void;
@@ -17,13 +19,15 @@ export class FeePayerSelect extends React.Component<Props> {
       return <div>No fee payer available</div>;
     }
     return (
-      <select onChange={this.handleSelectChange}>
-        {addresses.map(a => (
-          <option key={a} value={a}>
-            {a}
-          </option>
-        ))}
-      </select>
+      <div className="fee-payer-select">
+        <select onChange={this.handleSelectChange} className="form-control">
+          {addresses.map(a => (
+            <option key={a} value={a}>
+              {a}
+            </option>
+          ))}
+        </select>
+      </div>
     );
   }
 

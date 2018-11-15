@@ -2,8 +2,10 @@ import * as React from "react";
 
 import { PlatformAddress } from "codechain-primitives/lib";
 
-import { RegistrarSelectValue } from "../../common/types/transactions";
-import { ApiClient } from "../api-client";
+import { RegistrarSelectValue } from "../../../common/types/transactions";
+import { ApiClient } from "../../api-client";
+
+import "./RegistrarSelect.css";
 
 interface Props {
   onChange?: (value: RegistrarSelectValue) => void;
@@ -26,8 +28,9 @@ export class RegistrarSelect extends React.Component<Props, States> {
   public render() {
     const { addresses, err } = this.state;
     return (
-      <>
+      <div className="registrar-select">
         <select
+          className="form-control"
           onChange={this.handleSelectChange}
           value={this.props.value && this.props.value.toString()}
         >
@@ -44,7 +47,7 @@ export class RegistrarSelect extends React.Component<Props, States> {
         </select>
         {addresses === undefined && <span>Loading account list</span>}
         {err && <span>Errored while loading account list: {err}</span>}
-      </>
+      </div>
     );
   }
 

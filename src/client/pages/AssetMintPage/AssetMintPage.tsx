@@ -1,12 +1,17 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 
-import { MintTransactionInputValue } from "../../common/types/transactions";
+import { MintTransactionInputValue } from "../../../common/types/transactions";
 
-import { ApiClient } from "../api-client";
-import { FeePayerSelect } from "../components/FeePayerSelect";
-import { MintTransactionInput } from "../components/MintTransactionInput";
-import { ParcelLink } from "../components/ParcelLink";
-import { InputGroupError } from "../input-group-error";
+import { ApiClient } from "../../api-client";
+import { FeePayerSelect } from "../../components/FeePayerSelect/FeePayerSelect";
+import { MintTransactionInput } from "../../components/MintTransactionInput/MintTransactionInput";
+import { ParcelLink } from "../../components/ParcelLink";
+import { InputGroupError } from "../../input-group-error";
+
+import { Link } from "react-router-dom";
+import { Label } from "reactstrap";
+import "./AssetMintPage.css";
 
 interface States {
   mintValue: MintTransactionInputValue;
@@ -38,29 +43,44 @@ export class AssetMintPage extends React.Component<{}, States> {
       return <div>Errored: {txError}</div>;
     }
     return (
-      <div>
+      <div className="asset-mint-page">
+        <div className="d-flex align-items-end">
+          <h3 className="mb-0">Mint Asset</h3>
+          <Link to="/asset" className="ml-auto link cancel-text">
+            Cancel
+          </Link>
+        </div>
+        <br />
         <MintTransactionInput
           onChange={this.handleMintTransactionEditorChange}
         />
-        <hr />
-        FeePayer:
-        <FeePayerSelect
-          addresses={
-            [
-              "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47"
-            ] /* Not implemented */
-          }
-          onChange={this.handleFeePayerSelectChange}
-        />
+        <div className="form-group">
+          <Label>Select fee payer</Label>
+          <FeePayerSelect
+            addresses={
+              [
+                "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47"
+              ] /* Not implemented */
+            }
+            onChange={this.handleFeePayerSelectChange}
+          />
+        </div>
         <br />
-        <span title={Object.keys(inputGroupError).join(" ")}>
+        <div className="d-flex align-items-center">
           <button
+            type="button"
+            className="btn btn-primary"
             onClick={this.handleSendClick}
             disabled={this.shouldDisableSubmit}
           >
             Send Transaction
           </button>
-        </span>
+          <FontAwesomeIcon
+            className="ml-2"
+            icon={["far", "question-circle"]}
+            title={Object.keys(inputGroupError).join(" ")}
+          />
+        </div>
         {parcelHash && (
           <ParcelLink parcelHash={parcelHash}>Transaction sent</ParcelLink>
         )}

@@ -37,7 +37,7 @@ export class AssetAddressPage extends React.Component<{}, States> {
               className="d-inline-block remove-btn"
               onClick={() => this.onClickRemove(a)}
             >
-              <FontAwesomeIcon icon="trash" className="ml-2" />
+              <FontAwesomeIcon icon={["far", "trash-alt"]} className="ml-2" />
             </div>
           </div>
         ))}

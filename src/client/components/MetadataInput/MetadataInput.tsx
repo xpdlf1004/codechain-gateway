@@ -4,7 +4,10 @@ import * as React from "react";
 import {
   BasicMetadataInput,
   BasicMetadataInputValue
-} from "./BasicMetadataInput";
+} from "../BasicMetadataInput/BasicMetadataInput";
+
+import { Label } from "reactstrap";
+import "./MetadataInput.css";
 
 export type MetadataInputValue =
   | {
@@ -61,25 +64,57 @@ export class MetadataInput extends React.Component<Props, States> {
   public render() {
     const { value } = this.state;
     return (
-      <>
-        <select value={value.type} onChange={this.handleTypeChange}>
-          <option value="basic">basic</option>
-          <option value="manual">manual</option>
-        </select>
+      <div className="metadata-input">
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="basic"
+            id="basic-input"
+            value="basic"
+            checked={value.type === "basic"}
+            onChange={this.handleTypeChange}
+          />
+          <Label className="form-check-label" for="basic-input">
+            Basic
+          </Label>
+        </div>
         {value.type === "basic" && (
           <BasicMetadataInput
             value={value.value}
             onChange={this.handleBasicValueChange}
           />
         )}
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="manual"
+            id="manual-input"
+            value="manual"
+            checked={value.type === "manual"}
+            onChange={this.handleTypeChange}
+          />
+          <Label className="form-check-label" for="manual-input">
+            Manual
+          </Label>
+        </div>
         {value.type === "manual" && (
-          <input value={value.value} onChange={this.handleManualValueChange} />
+          <div className="manual-input">
+            <textarea
+              className="form-control"
+              placeholder="Enter metadata string"
+              value={value.value}
+              onChange={this.handleManualValueChange}
+              rows={5}
+            />
+          </div>
         )}
-      </>
+      </div>
     );
   }
 
-  private handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  private handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = MetadataInput.getDefaultValue(event.target.value);
     this.setState({
       value: newValue
@@ -103,7 +138,7 @@ export class MetadataInput extends React.Component<Props, States> {
   };
 
   private handleManualValueChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     if (this.state.value.type !== "manual") {
       throw Error(`Unexpected state`);

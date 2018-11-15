@@ -6,7 +6,7 @@ import {
   TransferOutputInputGroupValue
 } from "../../common/types/transactions";
 import { InputGroupError } from "../input-group-error";
-import { RecipientSelect } from "./RecipientSelect";
+import { RecipientSelect } from "./RecipientSelect/RecipientSelect";
 
 interface Props {
   assetType?: string;

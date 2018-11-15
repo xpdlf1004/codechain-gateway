@@ -30,6 +30,8 @@ export class AssetListPage extends React.Component<{}, States> {
     }
     return (
       <div>
+        <h3>Asset</h3>
+        <br />
         <div>
           <Link to={`/asset/new`}>
             <button type="button" className="btn btn-primary">

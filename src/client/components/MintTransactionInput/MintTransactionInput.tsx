@@ -1,16 +1,22 @@
 import update from "immutability-helper";
 import * as React from "react";
 
+import "./MintTransactionInput.css";
+
 import {
   MintTransactionInputValue,
   RecipientSelectValue,
   RegistrarSelectValue
-} from "../../common/types/transactions";
+} from "../../../common/types/transactions";
 
-import { InputGroupError } from "../input-group-error";
-import { MetadataInput, MetadataInputValue } from "./MetadataInput";
-import { RecipientSelect } from "./RecipientSelect";
-import { RegistrarSelect } from "./RegistrarSelect";
+import Table from "reactstrap/lib/Table";
+import { InputGroupError } from "../../input-group-error";
+import {
+  MetadataInput,
+  MetadataInputValue
+} from "../MetadataInput/MetadataInput";
+import { RecipientSelect } from "../RecipientSelect/RecipientSelect";
+import { RegistrarSelect } from "../RegistrarSelect/RegistrarSelect";
 
 interface Props {
   onChange?: (
@@ -51,26 +57,42 @@ export class MintTransactionInput extends React.Component<Props, States> {
 
   public render() {
     return (
-      <div>
-        <fieldset>
-          <legend>Asset Scheme</legend>
-          <div>
-            Metadata: <MetadataInput onChange={this.handleMetadataChange} />
-          </div>
-          <div>
-            Registrar:
-            <RegistrarSelect
-              onChange={this.handleRegistrarSelectChange}
-              value={this.state.data.registrar}
-            />
-          </div>
-          <div>
-            Amount <input onChange={this.handleAmountChange} defaultValue="0" />
-          </div>
-        </fieldset>
-        <div>
-          Recipient: <RecipientSelect onChange={this.handleRecipientChange} />
-        </div>
+      <div className="mint-transaction-input">
+        <Table>
+          <tbody>
+            <tr>
+              <th>Metadata</th>
+              <td>
+                <MetadataInput onChange={this.handleMetadataChange} />
+              </td>
+            </tr>
+            <tr>
+              <th>Registrar</th>
+              <td>
+                <RegistrarSelect
+                  onChange={this.handleRegistrarSelectChange}
+                  value={this.state.data.registrar}
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Quantity</th>
+              <td>
+                <input
+                  className="form-control"
+                  onChange={this.handleAmountChange}
+                  defaultValue="0"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Recipient</th>
+              <td>
+                <RecipientSelect onChange={this.handleRecipientChange} />
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </div>
     );
   }

@@ -2,7 +2,9 @@ import * as React from "react";
 
 import { AssetTransferAddress, H160 } from "codechain-primitives/lib";
 
-import { RecipientSelectValue } from "../../common/types/transactions";
+import { RecipientSelectValue } from "../../../common/types/transactions";
+
+import "./RecipientSelect.css";
 
 interface Props {
   addresses?: string[];
@@ -31,8 +33,8 @@ export class RecipientSelect extends React.Component<Props, States> {
   public render() {
     const { showLockScriptHashInput, showAddressInput } = this.state;
     return (
-      <>
-        <select onChange={this.handleSelectChange}>
+      <div className="recipient-select">
+        <select className="form-control" onChange={this.handleSelectChange}>
           <option value="create">Create a new address</option>
           <option value="manual">Type manually</option>
           <option value="address">LockScriptHash (For advanced users)</option>
@@ -56,7 +58,7 @@ export class RecipientSelect extends React.Component<Props, States> {
             />
           </span>
         )}
-      </>
+      </div>
     );
   }
 

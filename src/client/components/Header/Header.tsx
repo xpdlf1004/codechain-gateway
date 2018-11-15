@@ -16,7 +16,7 @@ class Header extends React.Component<any, any> {
           <Link to="/">
             <div className="d-flex align-items-center title-container justify-content-center">
               <img src={logo} className="logo" />
-              <h4 className="ml-1 title mb-0 mr-1">CodeChain Gateway</h4>
+              <h5 className="ml-1 title mb-0 mr-2">CodeChain Gateway</h5>
             </div>
           </Link>
           <div className="d-flex align-items-center menu-container">

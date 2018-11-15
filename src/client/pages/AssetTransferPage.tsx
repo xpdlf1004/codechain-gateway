@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { TransferOutputInputGroupValue } from "../../common/types/transactions";
 import { ApiClient } from "../api-client";
-import { FeePayerSelect } from "../components/FeePayerSelect";
+import { FeePayerSelect } from "../components/FeePayerSelect/FeePayerSelect";
 import { ParcelLink } from "../components/ParcelLink";
 import { TransferOutputInput } from "../components/TransferOutputInput";
 import { InputGroupError } from "../input-group-error";

@@ -1,0 +1,24 @@
+@import "styles/variables.scss";
+
+.mint-transaction-input {
+  table {
+    border: 1px solid $line-color;
+    border-top: 2px solid $line-color-dark;
+
+    th {
+      width: 150px;
+    }
+    td {
+      border-left: 1px solid $line-color;
+
+      textarea {
+        resize: none;
+        border-radius: 0;
+      }
+
+      input {
+        border-radius: 0;
+      }
+    }
+  }
+}

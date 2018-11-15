@@ -1,0 +1,36 @@
+@import "styles/variables.scss";
+
+.basic-metadata-input {
+  padding: 20px;
+
+  label {
+    font-size: 0.8rem;
+  }
+
+  .form-group {
+    margin-bottom: 8px;
+  }
+
+  .image-loader-container {
+    padding-left: 80px;
+    padding-right: 50px;
+
+    .drop-text {
+      width: 100%;
+      height: 100%;
+
+      .drop-image-icon {
+        font-size: 2.5rem;
+        color: $gray-text-color;
+      }
+    }
+    .preview-container {
+      width: 100%;
+      height: 100%;
+      .uploaded-image {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+}

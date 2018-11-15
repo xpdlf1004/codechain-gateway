@@ -1,10 +1,14 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
+  faFileImage,
+  faQuestionCircle,
+  faTrashAlt
+} from "@fortawesome/free-regular-svg-icons";
+import {
   faAddressBook,
   faGift,
   faHome,
   faList,
-  faTrash,
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 import * as React from "react";
@@ -18,13 +22,23 @@ import { AccountPage } from "./pages/AccountPage/AccountPage";
 import { AssetAddressPage } from "./pages/AssetAddressPage/AssetAddressPage";
 import { AssetDetailPage } from "./pages/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
-import { AssetMintPage } from "./pages/AssetMintPage";
+import { AssetMintPage } from "./pages/AssetMintPage/AssetMintPage";
 import { AssetTransferPage } from "./pages/AssetTransferPage";
 import { HomePage } from "./pages/HomePage";
 import { TransactionPage } from "./pages/TransactionPage";
 import { store } from "./store";
 
-library.add(faHome, faUser, faGift, faAddressBook, faList, faTrash);
+library.add(
+  faHome,
+  faUser,
+  faGift,
+  faAddressBook,
+  faList,
+  faTrashAlt,
+  faQuestionCircle,
+  faFileImage,
+  faQuestionCircle
+);
 
 export const App = () => (
   <Provider store={store}>

@@ -2,6 +2,9 @@
 @import "styles/variables.scss";
 @import "styles/typography.scss";
 @import "styles/mixin.scss";
+html {
+  font-size: 14px;
+}
 
 body {
   color: $dark-text-color;
@@ -34,6 +37,8 @@ a {
 
 .content-container {
   padding: 50px;
+  height: calc(100vh - #{$header-height});
+  overflow: scroll;
 }
 
 .mono {
@@ -51,7 +56,14 @@ a {
   background-color: $primary-color;
   border: 0px;
 
-  &:hover {
+  &:hover:enabled {
     background-color: darken($primary-color, 15%);
+  }
+  &:active,
+  &:focus {
+    background-color: darken($primary-color, 15%) !important;
+  }
+  &:disabled {
+    background-color: $primary-color;
   }
 }
