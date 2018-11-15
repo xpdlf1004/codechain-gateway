@@ -4,6 +4,7 @@ import { match } from "react-router";
 import { PlatformAddress } from "codechain-primitives/lib";
 
 import { ApiClient } from "../api-client";
+import { GetCCCButon } from "../components/GetCCCButton";
 
 interface Props {
   match: match<{ address: string }>;
@@ -55,6 +56,8 @@ export class AccountDetailPage extends React.Component<Props, States> {
         balance: {balance}
         <br />
         seq: {seq}
+        <hr />
+        <GetCCCButon />
       </div>
     );
   }
