@@ -11,7 +11,7 @@ export class ApiClient {
     private baseUrl: string;
 
     constructor() {
-        this.baseUrl = "//localhost:4000";
+        this.baseUrl = process.env.REACT_APP_SERVER_URL || "//localhost:4000";
     }
 
     // Account
