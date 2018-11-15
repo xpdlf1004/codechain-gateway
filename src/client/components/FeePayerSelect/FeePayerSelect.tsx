@@ -32,7 +32,6 @@ export class FeePayerSelect extends React.Component<Props> {
   }
 
   private handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // FIXME: Make sure that e.target.value is a correct usage.
     this.emitChange(null, e.target.value);
   };
 

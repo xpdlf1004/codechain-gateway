@@ -100,7 +100,6 @@ export class RecipientSelect extends React.Component<Props, States> {
   private handleSelectChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    // FIXME: Make sure that e.target.value is a correct usage.
     this.setState({
       showLockScriptHashInput: event.target.value === "address",
       showAddressInput: event.target.value === "manual"
