@@ -10,7 +10,7 @@ import "./BasicMetadataInput.css";
 export interface BasicMetadataInputValue {
   name: string;
   description: string;
-  iconUrl: string;
+  icon_url: string;
 }
 
 interface Props {
@@ -27,7 +27,7 @@ export class BasicMetadataInput extends React.Component<Props, States> {
   public static getDefaultValue = (): BasicMetadataInputValue => ({
     name: "",
     description: "",
-    iconUrl: ""
+    icon_url: ""
   });
 
   constructor(props: Props) {
@@ -49,7 +49,7 @@ export class BasicMetadataInput extends React.Component<Props, States> {
 
   public render() {
     const { uploadedImageUrl } = this.state;
-    const { name, description, iconUrl } = this.state.value;
+    const { name, description, icon_url } = this.state.value;
     return (
       <div className="basic-metadata-input d-flex">
         <div className="flex-shrink-1 flex-grow-1 align-items-center">
@@ -82,7 +82,7 @@ export class BasicMetadataInput extends React.Component<Props, States> {
               className="form-control"
               id="url-input"
               placeholder="Enter asset description"
-              value={iconUrl}
+              value={icon_url}
               onChange={this.handleIconUrlChange}
               disabled={!!uploadedImageUrl}
             />
@@ -178,7 +178,7 @@ export class BasicMetadataInput extends React.Component<Props, States> {
 
   private updateIconUrl = (url: string) => {
     const newValue = update(this.state.value, {
-      iconUrl: {
+      icon_url: {
         $set: url
       }
     });
