@@ -15,7 +15,7 @@ import "./AssetMintPage.css";
 
 interface States {
   mintValue: MintTransactionInputValue;
-  feePayer: string;
+  feePayer?: string;
   inputGroupError: InputGroupError;
   txError?: string;
   parcelHash?: string;
@@ -32,7 +32,6 @@ export class AssetMintPage extends React.Component<{}, States> {
         metadata: "",
         registrar: "none"
       },
-      feePayer: "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47",
       inputGroupError: {}
     };
   }
@@ -56,14 +55,7 @@ export class AssetMintPage extends React.Component<{}, States> {
         />
         <div className="form-group">
           <Label>Select fee payer</Label>
-          <FeePayerSelect
-            addresses={
-              [
-                "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47"
-              ] /* Not implemented */
-            }
-            onChange={this.handleFeePayerSelectChange}
-          />
+          <FeePayerSelect onChange={this.handleFeePayerSelectChange} />
         </div>
         <br />
         <div className="d-flex align-items-center">
@@ -89,14 +81,16 @@ export class AssetMintPage extends React.Component<{}, States> {
   }
 
   private get shouldDisableSubmit(): boolean {
-    return Object.keys(this.state.inputGroupError).length > 0;
+    return (
+      Object.keys(this.state.inputGroupError).length > 0 ||
+      this.state.feePayer === undefined
+    );
   }
 
-  private handleFeePayerSelectChange = (
-    err: string | null,
-    address: string
-  ) => {
-    // Not implemented
+  private handleFeePayerSelectChange = (address: string) => {
+    this.setState({
+      feePayer: address
+    });
   };
 
   private handleMintTransactionEditorChange = (
@@ -117,6 +111,9 @@ export class AssetMintPage extends React.Component<{}, States> {
 
   private handleSendClick = () => {
     const { mintValue, feePayer } = this.state;
+    if (!feePayer) {
+      return alert("feePayer is undefined");
+    }
     new ApiClient()
       .mintAsset(mintValue, feePayer)
       .then(result => {

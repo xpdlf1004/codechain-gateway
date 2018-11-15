@@ -15,7 +15,7 @@ interface Props {
 
 interface States {
   transferValue: TransferOutputInputGroupValue;
-  feePayer: string;
+  feePayer?: string;
   inputGroupError: InputGroupError;
   txError?: string;
   parcelHash?: string;
@@ -37,7 +37,6 @@ export class AssetTransferPage extends React.Component<Props, States> {
         amount: 1,
         assetType
       },
-      feePayer: "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47",
       inputGroupError: {}
     };
   }
@@ -64,14 +63,7 @@ export class AssetTransferPage extends React.Component<Props, States> {
           onChange={this.handleTransferOutputInputGroupChange}
         />
         <hr />
-        <FeePayerSelect
-          addresses={
-            [
-              "tccqym6zrsevq83ak29vw7j6k2q2sh9ep2evuvaeh47"
-            ] /* Not implemented */
-          }
-          onChange={this.handleFeePayerSelectChange}
-        />
+        <FeePayerSelect onChange={this.handleFeePayerSelectChange} />
         <br />
         <span title={Object.keys(inputGroupError).join(" ")}>
           <button
@@ -103,8 +95,10 @@ export class AssetTransferPage extends React.Component<Props, States> {
     });
   };
 
-  private handleFeePayerSelectChange = () => {
-    // Not implemented
+  private handleFeePayerSelectChange = (address: string) => {
+    this.setState({
+      feePayer: address
+    });
   };
 
   private handleSendClick = () => {
@@ -112,6 +106,9 @@ export class AssetTransferPage extends React.Component<Props, States> {
     const { sender } = qs.parse(this.props.location.search) as {
       sender: string;
     };
+    if (!feePayer) {
+      return alert("feePayer is undefined");
+    }
     new ApiClient()
       .transferAsset(transferValue, sender, feePayer)
       .then(result => {
