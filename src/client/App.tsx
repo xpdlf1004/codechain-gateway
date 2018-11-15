@@ -15,7 +15,7 @@ import Header from "./components/Header/Header";
 import SideMenu from "./components/SideMenu/SideMenu";
 import { AccountDetailPage } from "./pages/AccountDetailPage";
 import { AccountPage } from "./pages/AccountPage/AccountPage";
-import { AssetAddressPage } from "./pages/AssetAddressPage";
+import { AssetAddressPage } from "./pages/AssetAddressPage/AssetAddressPage";
 import { AssetDetailPage } from "./pages/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
 import { AssetMintPage } from "./pages/AssetMintPage";

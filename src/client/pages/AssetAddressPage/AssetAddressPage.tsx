@@ -1,5 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
-import { ApiClient } from "../api-client";
+import { ApiClient } from "../../api-client";
+
+import "./AssetAddressPage.css";
 
 interface States {
   addresses?: string[];
@@ -26,11 +29,16 @@ export class AssetAddressPage extends React.Component<{}, States> {
       return <div>Loading</div>;
     }
     return (
-      <div>
+      <div className="asset-address-page">
         {addresses.map(a => (
           <div key={a}>
-            <span>{a}</span>
-            <button onClick={() => this.onClickRemove(a)}>x</button>
+            <span className="mono">{a}</span>
+            <div
+              className="d-inline-block remove-btn"
+              onClick={() => this.onClickRemove(a)}
+            >
+              <FontAwesomeIcon icon="trash" className="ml-2" />
+            </div>
           </div>
         ))}
       </div>
