@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Transaction } from "../../common/types/transactions";
 import { ApiClient } from "../api-client";
+import { TransactionLink } from "../components/TransactionLink";
 
 interface States {
   transactions?: Transaction[] | null;
@@ -54,14 +55,7 @@ export class TransactionPage extends React.Component<{}, States> {
                   0x
                   {tx.txhash.substr(0, 6)}
                   ...
-                  <a
-                    href={`https://husky.codechain.io/explorer/tx/0x${
-                      tx.txhash
-                    }`}
-                    target="_blank"
-                  >
-                    Explorer
-                  </a>
+                  <TransactionLink txhash={tx.txhash}>Explorer</TransactionLink>
                 </td>
               </tr>
             ))}

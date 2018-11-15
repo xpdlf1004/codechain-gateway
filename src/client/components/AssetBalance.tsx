@@ -9,6 +9,7 @@ import {
 import { AssetTransferAddress } from "codechain-primitives/lib";
 import { P2PKH } from "codechain-sdk/lib/key/P2PKH";
 import { P2PKHBurn } from "codechain-sdk/lib/key/P2PKHBurn";
+import { TransactionLink } from "./TransactionLink";
 
 interface Props {
   assetType: string;
@@ -64,14 +65,10 @@ export class AssetBalance extends React.Component<Props, States> {
               <>
                 {pending.txs.map(tx => (
                   <>
-                    <a
-                      key={tx}
-                      href={`https://husky.codechain.io/explorer/tx/${tx}`}
-                      target="_blank"
-                    >
+                    <TransactionLink key={tx} txhash={tx}>
                       {tx.substr(0, 6)}
                       ...
-                    </a>
+                    </TransactionLink>
                     ,
                   </>
                 ))}

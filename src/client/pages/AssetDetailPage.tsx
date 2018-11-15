@@ -5,6 +5,7 @@ import { AssetDetail } from "../../common/types/asset";
 import { ApiClient } from "../api-client";
 import { AssetBalance } from "../components/AssetBalance";
 import { AssetRuleEditor } from "../components/AssetRuleEditor";
+import { TransactionLink } from "../components/TransactionLink";
 
 interface Props {
   match: match<{ assetType: string }>;
@@ -66,12 +67,9 @@ export class AssetDetailPage extends React.Component<Props, States> {
         ) : (
           <>
             MintTransaction is not confirmed yet:{" "}
-            <a
-              href={`https://husky.codechain.io/explorer/tx/${mintTxHash}`}
-              target="_blank"
-            >
+            <TransactionLink txhash={mintTxHash}>
               Go to explorer
-            </a>
+            </TransactionLink>
           </>
         )}
       </div>
