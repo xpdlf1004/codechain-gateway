@@ -5,6 +5,7 @@ import { MintTransactionInputValue } from "../../common/types/transactions";
 import { ApiClient } from "../api-client";
 import { FeePayerSelect } from "../components/FeePayerSelect";
 import { MintTransactionInput } from "../components/MintTransactionInput";
+import { ParcelLink } from "../components/ParcelLink";
 import { InputGroupError } from "../input-group-error";
 
 interface States {
@@ -61,12 +62,7 @@ export class AssetMintPage extends React.Component<{}, States> {
           </button>
         </span>
         {parcelHash && (
-          <a
-            href={`https://husky.codechain.io/explorer/parcel/${parcelHash}`}
-            target="_blank"
-          >
-            Transaction sent
-          </a>
+          <ParcelLink parcelHash={parcelHash}>Transaction sent</ParcelLink>
         )}
       </div>
     );

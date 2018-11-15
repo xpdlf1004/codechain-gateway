@@ -4,6 +4,7 @@ import * as React from "react";
 import { TransferOutputInputGroupValue } from "../../common/types/transactions";
 import { ApiClient } from "../api-client";
 import { FeePayerSelect } from "../components/FeePayerSelect";
+import { ParcelLink } from "../components/ParcelLink";
 import { TransferOutputInput } from "../components/TransferOutputInput";
 import { InputGroupError } from "../input-group-error";
 
@@ -81,12 +82,7 @@ export class AssetTransferPage extends React.Component<Props, States> {
           </button>
         </span>
         {parcelHash && (
-          <a
-            href={`https://husky.codechain.io/explorer/parcel/${parcelHash}`}
-            target="_blank"
-          >
-            Transaction sent
-          </a>
+          <ParcelLink parcelHash={parcelHash}>Transaction sent</ParcelLink>
         )}
       </div>
     );
