@@ -39,6 +39,7 @@ a {
   padding: 50px;
   height: calc(100vh - #{$header-height});
   overflow: scroll;
+  flex: 1;
 }
 
 .mono {

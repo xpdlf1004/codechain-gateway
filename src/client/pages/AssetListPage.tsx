@@ -44,7 +44,9 @@ export class AssetListPage extends React.Component<{}, States> {
         <span>Total {assets.length} assets</span>
         {assets.map(a => (
           <div key={a.type}>
-            <Link to={`asset/${a.type}`}>{a.name}</Link>
+            <Link className="link" to={`asset/${a.type}`}>
+              {a.name}
+            </Link>
           </div>
         ))}
       </div>

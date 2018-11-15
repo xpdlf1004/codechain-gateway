@@ -2,7 +2,7 @@
 @import "styles/mixin.scss";
 
 .side-menu {
-  width: 300px;
+  width: 250px;
   height: calc(100vh - #{$header-height});
   background-color: $sidemenu-main-bg-color;
   border-right: 1px solid $line-color;

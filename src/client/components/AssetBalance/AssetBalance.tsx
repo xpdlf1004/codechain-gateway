@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { ApiClient } from "../api-client";
+import { ApiClient } from "../../api-client";
 
 import {
   AssetTransferInputDoc,
@@ -9,7 +9,7 @@ import {
 import { AssetTransferAddress } from "codechain-primitives/lib";
 import { P2PKH } from "codechain-sdk/lib/key/P2PKH";
 import { P2PKHBurn } from "codechain-sdk/lib/key/P2PKHBurn";
-import { TransactionLink } from "./TransactionLink";
+import { TransactionLink } from "../TransactionLink";
 
 interface Props {
   assetType: string;

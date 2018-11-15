@@ -1,7 +1,10 @@
 import * as React from "react";
 
-import { AssetRule } from "../../common/types/rules";
-import { ApiClient } from "../api-client";
+import { AssetRule } from "../../../common/types/rules";
+import { ApiClient } from "../../api-client";
+
+import Label from "reactstrap/lib/Label";
+import "./AssetRuleEditor.css";
 
 interface Props {
   assetType: string;
@@ -31,14 +34,17 @@ export class AssetRuleEditor extends React.Component<Props, States> {
       return <>Loading ... </>;
     }
     return (
-      <>
-        Transferrable through API: {rule.allowed}{" "}
-        <input
-          type="checkbox"
-          checked={rule.allowed}
-          onChange={this.handleCheckboxChange}
-        />
-      </>
+      <div className="asset-rule-editor d-flex align-items-center">
+        <span>Transferrable through API</span>
+        <Label className="switch mb-0 ml-3">
+          <input
+            type="checkbox"
+            checked={rule.allowed}
+            onChange={this.handleCheckboxChange}
+          />
+          <span className="slider" />
+        </Label>
+      </div>
     );
   }
 

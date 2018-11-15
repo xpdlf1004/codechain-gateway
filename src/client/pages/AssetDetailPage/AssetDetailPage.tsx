@@ -1,11 +1,16 @@
 import * as React from "react";
 import { match } from "react-router";
 
-import { AssetDetail } from "../../common/types/asset";
-import { ApiClient } from "../api-client";
-import { AssetBalance } from "../components/AssetBalance";
-import { AssetRuleEditor } from "../components/AssetRuleEditor";
-import { TransactionLink } from "../components/TransactionLink";
+import { AssetDetail } from "../../../common/types/asset";
+import { ApiClient } from "../../api-client";
+import { AssetBalance } from "../../components/AssetBalance/AssetBalance";
+import { AssetRuleEditor } from "../../components/AssetRuleEditor/AssetRuleEditor";
+import { TransactionLink } from "../../components/TransactionLink";
+
+import { Type } from "codechain-indexer-types/lib/utils";
+
+import { Label } from "reactstrap";
+import "./AssetDetailPage.css";
 
 interface Props {
   match: match<{ assetType: string }>;
@@ -43,34 +48,64 @@ export class AssetDetailPage extends React.Component<Props, States> {
     if (!item) {
       return <div>Loading ... </div>;
     }
-    const { type, name, mintTxHash } = item;
+    const { type, name, mintTxHash, scheme } = item;
+    const metadata = scheme && Type.getMetadata(scheme.metadata);
     return (
-      <div>
-        <h3>Asset Name: {name}</h3>
-        AssetType: {type}
-        <br />
+      <div className="asset-detail-page">
+        <div className="d-flex align-items-center">
+          {metadata &&
+            metadata.icon_url && (
+              <div className="mr-3">
+                <img className="icon" src={metadata.icon_url} />
+              </div>
+            )}
+          <div>
+            <h3>{name}</h3>
+            <span className="mono">{type}</span>
+          </div>
+        </div>
+        <hr />
         <AssetRuleEditor assetType={type} />
-        <br />
+        <hr />
         {item.scheme ? (
-          <>
-            <br />
-            metadata:
-            <input type="text" value={item.scheme.metadata} disabled />
-            <br />
-            registrar:
-            <input type="text" value={item.scheme.registrar || ""} disabled />
-            <br />
-            Total supply: {item.scheme.amount}
-            <br />
+          <div>
+            <div className="form-group">
+              <Label>Metadata</Label>
+              <textarea
+                className="form-control"
+                value={item.scheme.metadata}
+                rows={5}
+                disabled
+              />
+            </div>
+            <div className="form-group">
+              <Label>Registrar</Label>
+              <input
+                className="form-control"
+                type="text"
+                value={item.scheme.registrar || ""}
+                disabled
+              />
+            </div>
+            <div className="form-group">
+              <Label>Total supply</Label>
+              <input
+                className="form-control"
+                type="text"
+                value={item.scheme.amount || ""}
+                disabled
+              />
+            </div>
+            <hr />
             {this.renderAssetOwners()}
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             MintTransaction is not confirmed yet:{" "}
             <TransactionLink txhash={mintTxHash}>
               Go to explorer
             </TransactionLink>
-          </>
+          </div>
         )}
       </div>
     );
@@ -85,7 +120,6 @@ export class AssetDetailPage extends React.Component<Props, States> {
 
     return (
       <div>
-        <br />
         <span>Total {Object.keys(owners).length} owners</span>
         {Object.keys(owners).map(address => (
           <div key={address}>

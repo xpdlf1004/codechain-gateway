@@ -20,7 +20,7 @@ import SideMenu from "./components/SideMenu/SideMenu";
 import { AccountDetailPage } from "./pages/AccountDetailPage";
 import { AccountPage } from "./pages/AccountPage/AccountPage";
 import { AssetAddressPage } from "./pages/AssetAddressPage/AssetAddressPage";
-import { AssetDetailPage } from "./pages/AssetDetailPage";
+import { AssetDetailPage } from "./pages/AssetDetailPage/AssetDetailPage";
 import { AssetListPage } from "./pages/AssetListPage";
 import { AssetMintPage } from "./pages/AssetMintPage/AssetMintPage";
 import { AssetTransferPage } from "./pages/AssetTransferPage";
@@ -47,7 +47,7 @@ export const App = () => (
         <Header />
         <div className="d-flex">
           <SideMenu />
-          <div className="flex-grow-1 flex-shrink-1 content-container">
+          <div className="content-container">
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/account" component={AccountPage} />
