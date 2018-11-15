@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Roboto+Mono|Roboto:400,700,900");
 @import "styles/variables.scss";
 @import "styles/typography.scss";
+@import "styles/mixin.scss";
 
 body {
   color: $dark-text-color;
@@ -10,13 +11,33 @@ body {
 a {
   color: $dark-text-color;
   &:hover {
-    color: darken($dark-text-color, 100%);
     text-decoration: none;
+    color: $dark-text-color;
+  }
+}
+
+.link {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.link-reverse {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 
 .content-container {
   padding: 50px;
+}
+
+.mono {
+  @include data-font();
 }
 
 .btn {

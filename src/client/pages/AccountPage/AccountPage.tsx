@@ -52,7 +52,9 @@ export class AccountPage extends React.Component<{}, States> {
                 }
                 className="mr-2"
               />
-              <Link to={`account/${a}`}>{a}</Link>
+              <Link to={`account/${a}`} className="link mono">
+                {a}
+              </Link>
               <div
                 className="ml-2 d-inline-block remove-btn"
                 onClick={() => this.handleRemoveClick(a)}

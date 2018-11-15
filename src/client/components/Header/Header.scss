@@ -17,13 +17,11 @@
   .menu-container {
     flex: 1;
     background-color: $header-main-bg-color;
-    color: $header-menu-text-color;
     padding-right: 40px;
     padding-left: 40px;
     .menu-item {
-      cursor: pointer;
-      &:hover {
-        text-decoration: underline;
+      span {
+        color: $header-menu-text-color;
       }
     }
   }

@@ -20,8 +20,16 @@ class Header extends React.Component<any, any> {
             </div>
           </Link>
           <div className="d-flex align-items-center menu-container">
-            <div className="ml-auto menu-item mr-4">Menu 1</div>
-            <div className="menu-item">Menu 2</div>
+            <div className="ml-auto menu-item mr-4">
+              <Link to="/" className="link-reverse">
+                <span>Menu 1</span>
+              </Link>
+            </div>
+            <div className="menu-item">
+              <Link to="/" className="link-reverse">
+                <span>Menu 2</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
